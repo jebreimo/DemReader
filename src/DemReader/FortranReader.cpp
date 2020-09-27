@@ -5,7 +5,7 @@
 // This file is distributed under the BSD License.
 // License text is included with the source distribution.
 //****************************************************************************
-#include "DemReader/FortranReader.hpp"
+#include "FortranReader.hpp"
 
 #include <algorithm>
 #include <charconv>

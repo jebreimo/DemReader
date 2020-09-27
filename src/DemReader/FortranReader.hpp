@@ -37,7 +37,6 @@ namespace DemReader
         std::optional<double> read_float64(size_t size);
 
         void skip(size_t size);
-
     private:
         template <typename T>
         std::optional<T> read_int(size_t size);

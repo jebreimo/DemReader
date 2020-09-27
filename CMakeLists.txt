@@ -22,11 +22,11 @@ option(DEMREADER_BUILD_DEM "Build dem command" ${DEMREADER_MASTER_PROJECT})
 
 add_library(DemReader
     include/DemReader/DemException.hpp
-    include/DemReader/FortranReader.hpp
+    src/DemReader/FortranReader.hpp
     src/DemReader/FortranReader.cpp
     src/DemReader/ParseNumber.cpp
     src/DemReader/ParseNumber.hpp
-    src/DemReader/DemReader.cpp src/DemReader/DemReader.hpp)
+    src/DemReader/DemReader.cpp include/DemReader/DemReader.hpp src/DemReader/RecordA.cpp include/DemReader/RecordA.hpp)
 
 add_library(DemReader::DemReader ALIAS DemReader)
 
