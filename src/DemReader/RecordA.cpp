@@ -5,7 +5,7 @@
 // This file is distributed under the BSD License.
 // License text is included with the source distribution.
 //****************************************************************************
-#include "DemReader/RecordA.hpp"
+#include "RecordA.hpp"
 
 #include <ostream>
 #include "FortranReader.hpp"
@@ -60,8 +60,8 @@ namespace DemReader
         WRITE_OPTIONAL(ref_sys);
         WRITE_OPTIONAL(ref_sys_zone);
         WRITE_ARRAY(map_projection_params);
-        WRITE_OPTIONAL(hor_unit_of_measure);
-        WRITE_OPTIONAL(ver_unit_of_measure);
+        WRITE_OPTIONAL(horizontal_unit);
+        WRITE_OPTIONAL(vertical_unit);
         WRITE_OPTIONAL(polygon_sides);
         WRITE_ARRAY(quadrangle_corners);
         WRITE_OPTIONAL(min_elevation);
@@ -98,7 +98,7 @@ namespace DemReader
         return DegMinSec{*d, *m, *s};
     }
 
-    RecordA read_RecordA(FortranReader& reader)
+    RecordA read_record_a(FortranReader& reader)
     {
         RecordA result;
         result.file_name = reader.read_string(40);
@@ -116,8 +116,8 @@ namespace DemReader
         result.ref_sys_zone = reader.read_int16(6);
         for (auto& param : result.map_projection_params)
             param = reader.read_float64(24);
-        result.hor_unit_of_measure = reader.read_int16(6);
-        result.ver_unit_of_measure = reader.read_int16(6);
+        result.horizontal_unit = reader.read_int16(6);
+        result.vertical_unit = reader.read_int16(6);
         result.polygon_sides = reader.read_int16(6);
         for (auto& corner : result.quadrangle_corners)
             corner = reader.read_float64(24);
@@ -144,7 +144,7 @@ namespace DemReader
         result.percent_void = reader.read_int16(4);
         result.edge_match_flag = reader.read_int32(8);
         result.vertical_datum_shift = reader.read_float64(7);
-        reader.skip(108);
+        reader.skip(109);
         return result;
     }
 }

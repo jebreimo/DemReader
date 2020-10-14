@@ -6,11 +6,12 @@
 // License text is included with the source distribution.
 //****************************************************************************
 #include <iostream>
-#include <cassert>
 #include <fstream>
 #include <Argos/Argos.hpp>
 #include <DemReader/DemReader.hpp>
 
+template<class... Ts> struct overloaded : Ts... { using Ts::operator()...; };
+template<class... Ts> overloaded(Ts...) -> overloaded<Ts...>;
 
 int main(int argc, char* argv[])
 {
@@ -25,7 +26,11 @@ int main(int argc, char* argv[])
     try
     {
         DemReader::DemReader reader(file);
-        print(reader.recordA(), std::cout);
+
+        for (auto r = reader.read_next(); r; r = reader.read_next())
+        {
+            std::cout << r->position.row << ", " << r->position.column << '\n';
+        }
     }
     catch (std::exception& ex)
     {

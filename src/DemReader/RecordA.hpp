@@ -35,8 +35,8 @@ namespace DemReader
         std::optional<int16_t> ref_sys;
         std::optional<int16_t> ref_sys_zone;
         std::optional<double> map_projection_params[15];
-        std::optional<int16_t> hor_unit_of_measure;
-        std::optional<int16_t> ver_unit_of_measure;
+        std::optional<int16_t> horizontal_unit;
+        std::optional<int16_t> vertical_unit;
         std::optional<int16_t> polygon_sides;
         std::optional<double> quadrangle_corners[8];
         std::optional<double> min_elevation;
@@ -68,5 +68,5 @@ namespace DemReader
     class FortranReader;
 
     [[nodiscard]]
-    RecordA read_RecordA(FortranReader& reader);
+    RecordA read_record_a(FortranReader& reader);
 }

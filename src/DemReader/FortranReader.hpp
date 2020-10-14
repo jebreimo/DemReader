@@ -11,6 +11,7 @@
 #include <string>
 #include <string_view>
 #include <vector>
+#include <ios>
 
 namespace DemReader
 {
@@ -37,14 +38,22 @@ namespace DemReader
         std::optional<double> read_float64(size_t size);
 
         void skip(size_t size);
+
+        [[nodiscard]]
+        size_t remaining_buffer_size() const;
+
+        bool fill_buffer(size_t size);
+
+        bool seek(std::streamoff pos, std::ios_base::seekdir dir);
+
+        [[nodiscard]]
+        std::streamsize tell() const;
     private:
         template <typename T>
         std::optional<T> read_int(size_t size);
 
         template <typename T>
         std::optional<T> read_float(size_t size);
-
-        bool fill_buffer(size_t size);
 
         std::istream* m_Stream = nullptr;
         std::string_view m_Str;

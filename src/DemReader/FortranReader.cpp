@@ -82,6 +82,37 @@ namespace DemReader
         return read_float<double>(size);
     }
 
+    bool FortranReader::fill_buffer(size_t size)
+    {
+        if (!m_Stream || !*m_Stream)
+            return false;
+        if (m_Str.size() >= size)
+            return true;
+        if (m_Str.data() != m_Buffer.data())
+        {
+            std::copy(m_Str.begin(), m_Str.end(),
+                      m_Buffer.begin());
+            m_Str = {m_Buffer.data(), m_Str.size()};
+        }
+        if (m_Buffer.size() < size)
+        {
+            auto prevSize = m_Buffer.size();
+            m_Buffer.resize(size);
+            m_Str = {m_Buffer.data(), prevSize};
+        }
+        auto bytesToRead = m_Buffer.size() - m_Str.size();
+        m_Stream->read(m_Buffer.data() + m_Str.size(), bytesToRead);
+        auto bytesRead = size_t(m_Stream->gcount());
+        m_Buffer.resize(m_Str.size() + bytesRead);
+        m_Str = {m_Buffer.data(), m_Buffer.size()};
+        return bytesRead != 0;
+    }
+
+    size_t FortranReader::remaining_buffer_size() const
+    {
+        return m_Str.size();
+    }
+
     void FortranReader::skip(size_t size)
     {
         if (size <= m_Str.size())
@@ -97,6 +128,26 @@ namespace DemReader
         auto end = std::streamoff(m_Stream->tellg());
         if (size_t(end - start) != size)
             DEM_THROW("End of file reached.");
+    }
+
+    bool FortranReader::seek(std::streamoff pos, std::ios_base::seekdir dir)
+    {
+        if (dir == std::ios_base::cur)
+        {
+            if (pos <= m_Str.size())
+            {
+                m_Str = m_Str.substr(pos);
+                return true;
+            }
+            pos -= m_Str.size();
+        }
+        m_Str = {};
+        return bool(m_Stream->seekg(pos));
+    }
+
+    std::streamsize FortranReader::tell() const
+    {
+        return std::streamsize(m_Stream->tellg()) - m_Str.size();
     }
 
     template <typename T>
@@ -121,29 +172,5 @@ namespace DemReader
         if (!parse(str, n))
             DEM_THROW("Invalid integer");
         return std::optional<T>(n);
-    }
-
-    bool FortranReader::fill_buffer(size_t size)
-    {
-        if (!m_Stream || !*m_Stream)
-            return false;
-        if (m_Str.data() != m_Buffer.data())
-        {
-            std::copy(m_Str.begin(), m_Str.end(),
-                      m_Buffer.begin());
-            m_Str = {m_Buffer.data(), m_Str.size()};
-        }
-        if (m_Buffer.size() < size)
-        {
-            auto prevSize = m_Buffer.size();
-            m_Buffer.resize(size);
-            m_Str = {m_Buffer.data(), prevSize};
-        }
-        auto bytesToRead = m_Buffer.size() - m_Str.size();
-        m_Stream->read(m_Buffer.data() + m_Str.size(), bytesToRead);
-        auto bytesRead = size_t(m_Stream->gcount());
-        m_Buffer.resize(m_Str.size() + bytesRead);
-        m_Str = {m_Buffer.data(), m_Buffer.size()};
-        return bytesRead != 0;
     }
 }

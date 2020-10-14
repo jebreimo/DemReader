@@ -16,12 +16,12 @@
  */
 
 /**
- * @brief The namespace for all DemReader classes and functions.
+ * @brief The namespace for all DemRecordIterator classes and functions.
  */
 namespace Dem
 {
     /**
-     * @brief The exception class used throughout DemReader.
+     * @brief The exception class used throughout DemRecordIterator.
      */
     class DemException : public std::runtime_error
     {
