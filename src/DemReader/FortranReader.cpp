@@ -13,7 +13,7 @@
 #include "DemReader/DemException.hpp"
 #include "ParseNumber.hpp"
 
-namespace DemReader
+namespace Dem
 {
     namespace
     {

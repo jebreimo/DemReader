@@ -5,12 +5,12 @@
 // This file is distributed under the BSD License.
 // License text is included with the source distribution.
 //****************************************************************************
-#include "RecordA.hpp"
+#include "DemReader/RecordA.hpp"
 
 #include <ostream>
 #include "FortranReader.hpp"
 
-namespace DemReader
+namespace Dem
 {
     std::ostream& operator<<(std::ostream& os, const DegMinSec& dms)
     {

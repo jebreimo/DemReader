@@ -9,30 +9,12 @@
 #include <iosfwd>
 #include <vector>
 #include <optional>
-#include "DemFileInfo.hpp"
+#include "RecordA.hpp"
+#include "RecordC.hpp"
+#include "RecordB.hpp"
 
-namespace DemReader
+namespace Dem
 {
-    struct GridPosition
-    {
-        int16_t row = 0;
-        int16_t column = 0;
-    };
-
-    struct GridExtent
-    {
-        GridPosition position;
-        GridSize size;
-    };
-
-    struct ElevationData
-    {
-        GridExtent extent;
-        double offset;
-        double factor;
-        std::vector<int32_t> elevations;
-    };
-
     class DemReader
     {
     public:
@@ -44,10 +26,24 @@ namespace DemReader
 
         DemReader& operator=(DemReader&& rhs) noexcept;
 
-        DemFileInfo file_info() const;
+        [[nodiscard]]
+        const RecordA& record_a() const;
 
-        std::optional<ElevationData> read_next();
+        [[nodiscard]]
+        const std::optional<RecordC>& record_c() const;
+
+        [[nodiscard]]
+        std::optional<RecordB> next_record_b();
     private:
+        void read_record_a();
+
+        [[nodiscard]]
+        std::optional<RecordB> read_record_b();
+
+        void read_record_c();
+
+        void move_to_first_record_b();
+
         struct Data;
         std::unique_ptr<Data> m_Data;
     };

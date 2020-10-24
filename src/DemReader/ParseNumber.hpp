@@ -9,7 +9,7 @@
 #include <cstdint>
 #include <string_view>
 
-namespace DemReader
+namespace Dem
 {
     bool parse(std::string_view str, char& value, bool detectBase = false);
 

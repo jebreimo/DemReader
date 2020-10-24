@@ -9,21 +9,26 @@
 
 #include <cstdint>
 #include <optional>
+#include <vector>
 
-namespace DemReader
+namespace Dem
 {
-    struct RecordC
+    struct RecordB
     {
-        std::optional<int16_t> has_datum_rmse;
-        std::optional<int16_t> datum_rmse[3];
-        std::optional<int16_t> datum_rmse_sample_size;
-        std::optional<int16_t> has_dem_rmse;
-        std::optional<int16_t> dem_rmse[3];
-        std::optional<int16_t> dem_rmse_sample_size;
+        int16_t row;
+        int16_t column;
+        int16_t rows;
+        int16_t columns;
+        double x;
+        double y;
+        double elevation_base;
+        std::optional<double> elevation_min;
+        std::optional<double> elevation_max;
+        std::vector<int32_t> elevations;
     };
 
     class FortranReader;
 
     [[nodiscard]]
-    RecordC read_record_c(FortranReader& reader);
+    RecordB read_record_b(FortranReader& reader);
 }

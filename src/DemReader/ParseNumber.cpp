@@ -13,7 +13,7 @@
 #include <optional>
 #include <type_traits>
 
-namespace DemReader
+namespace Dem
 {
     namespace
     {

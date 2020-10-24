@@ -51,3 +51,6 @@ namespace Dem
 
 #define DEM_THROW(msg) \
     _DEM_THROW_2(__FILE__, __LINE__, msg)
+
+#define DEM_THROW_STRING(msg) \
+    _DEM_THROW_2(__FILE__, __LINE__, + msg)

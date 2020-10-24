@@ -22,12 +22,12 @@ int main(int argc, char* argv[])
         args.value("FILE").error("no such file!");
     try
     {
-        DemReader::DemReader reader(file);
+        Dem::DemReader reader(file);
 
-        for (auto r = reader.read_next(); r; r = reader.read_next())
-        {
-            std::cout << r->position.row << ", " << r->position.column << '\n';
-        }
+        //for (auto r = reader.read_next(); r; r = reader.read_next())
+        //{
+        //    std::cout << r->position.row << ", " << r->position.column << '\n';
+        //}
     }
     catch (std::exception& ex)
     {

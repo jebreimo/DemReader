@@ -13,7 +13,7 @@
 #include <vector>
 #include <ios>
 
-namespace DemReader
+namespace Dem
 {
     class FortranReader
     {

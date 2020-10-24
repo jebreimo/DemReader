@@ -5,11 +5,11 @@
 // This file is distributed under the BSD License.
 // License text is included with the source distribution.
 //****************************************************************************
-#include "RecordB.hpp"
+#include "DemReader/RecordB.hpp"
 
 #include "FortranReader.hpp"
 
-namespace DemReader
+namespace Dem
 {
     constexpr size_t BLOCK_SIZE = 1024;
     RecordB read_record_b(FortranReader& reader)
@@ -22,8 +22,8 @@ namespace DemReader
         result.x = *reader.read_float64(24);
         result.y = *reader.read_float64(24);
         result.elevation_base = *reader.read_float64(24);
-        result.elevation_min = *reader.read_float64(24);
-        result.elevation_max = *reader.read_float64(24);
+        result.elevation_min = reader.read_float64(24);
+        result.elevation_max = reader.read_float64(24);
 
         size_t blockPos = 4 * 6 + 5 * 24;
         size_t remainder = result.rows * result.columns;

@@ -8,26 +8,22 @@
 #pragma once
 
 #include <cstdint>
-#include <vector>
+#include <optional>
 
-namespace DemReader
+namespace Dem
 {
-    struct RecordB
+    struct RecordC
     {
-        int16_t row;
-        int16_t column;
-        int16_t rows;
-        int16_t columns;
-        double x;
-        double y;
-        double elevation_base;
-        double elevation_min;
-        double elevation_max;
-        std::vector<int32_t> elevations;
+        std::optional<int16_t> has_datum_rmse;
+        std::optional<int16_t> datum_rmse[3];
+        std::optional<int16_t> datum_rmse_sample_size;
+        std::optional<int16_t> has_dem_rmse;
+        std::optional<int16_t> dem_rmse[3];
+        std::optional<int16_t> dem_rmse_sample_size;
     };
 
     class FortranReader;
 
     [[nodiscard]]
-    RecordB read_record_b(FortranReader& reader);
+    RecordC read_record_c(FortranReader& reader);
 }

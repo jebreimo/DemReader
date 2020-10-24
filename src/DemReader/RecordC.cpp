@@ -6,10 +6,10 @@
 // License text is included with the source distribution.
 //****************************************************************************
 
-#include "RecordC.hpp"
+#include "DemReader/RecordC.hpp"
 #include "FortranReader.hpp"
 
-namespace DemReader
+namespace Dem
 {
     RecordC read_record_c(FortranReader& reader)
     {

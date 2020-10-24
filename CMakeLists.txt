@@ -26,17 +26,15 @@ add_library(DemReader
     src/DemReader/FortranReader.cpp
     src/DemReader/ParseNumber.cpp
     src/DemReader/ParseNumber.hpp
-    src/DemReader/DemRecordIterator.cpp
-    src/DemReader/DemRecordIterator.hpp
     src/DemReader/RecordA.cpp
-    src/DemReader/RecordA.hpp
-    src/DemReader/RecordB.hpp
-    src/DemReader/RecordC.hpp
+    include/DemReader/RecordA.hpp
+    include/DemReader/RecordB.hpp
+    include/DemReader/RecordC.hpp
     src/DemReader/RecordC.cpp
     src/DemReader/RecordB.cpp
     src/DemReader/DemReader.cpp
     include/DemReader/DemReader.hpp
-    include/DemReader/DemFileInfo.hpp)
+    )
 
 add_library(DemReader::DemReader ALIAS DemReader)
 
