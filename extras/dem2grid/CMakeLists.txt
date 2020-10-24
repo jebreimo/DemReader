@@ -6,7 +6,7 @@
 # License text is included with the source distribution.
 # ===========================================================================
 cmake_minimum_required(VERSION 3.17)
-project(dem)
+project(dem2grid)
 
 set(CMAKE_CXX_STANDARD 17)
 
@@ -16,11 +16,11 @@ FetchContent_Declare(argos
     GIT_TAG v0.99.19)
 FetchContent_MakeAvailable(argos)
 
-add_executable(dem
-    src/main.cpp
+add_executable(dem2grid
+    src/dem2grid.cpp
     )
 
-target_link_libraries(dem
+target_link_libraries(dem2grid
     PRIVATE
         Argos::Argos
         DemReader::DemReader

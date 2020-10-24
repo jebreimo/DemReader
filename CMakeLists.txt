@@ -32,7 +32,11 @@ add_library(DemReader
     src/DemReader/RecordA.hpp
     src/DemReader/RecordB.hpp
     src/DemReader/RecordC.hpp
-    src/DemReader/RecordC.cpp src/DemReader/RecordB.cpp src/DemReader/DemReader.cpp include/DemReader/DemReader.hpp)
+    src/DemReader/RecordC.cpp
+    src/DemReader/RecordB.cpp
+    src/DemReader/DemReader.cpp
+    include/DemReader/DemReader.hpp
+    include/DemReader/DemFileInfo.hpp)
 
 add_library(DemReader::DemReader ALIAS DemReader)
 
@@ -47,5 +51,6 @@ export(TARGETS DemReader
     FILE DeamReaderConfig.cmake)
 
 if (DEMREADER_BUILD_DEM)
-    add_subdirectory(extras/dem)
+    add_subdirectory(extras/dem2grid)
+    add_subdirectory(extras/deminfo)
 endif()

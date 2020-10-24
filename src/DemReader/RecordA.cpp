@@ -18,6 +18,11 @@ namespace DemReader
         return os;
     }
 
+    std::ostream& operator<<(std::ostream& os, const CartesianCoordinates& cc)
+    {
+        return os << cc.northing << ' ' << cc.easting;
+    }
+
     #define WRITE_STRING(name) \
         do { \
             if (!rec.name.empty()) \
@@ -68,7 +73,9 @@ namespace DemReader
         WRITE_OPTIONAL(max_elevation);
         WRITE_OPTIONAL(rotation_angle);
         WRITE_OPTIONAL(elevation_accuracy);
-        WRITE_ARRAY(spatial_resolution);
+        WRITE_OPTIONAL(x_resolution);
+        WRITE_OPTIONAL(y_resolution);
+        WRITE_OPTIONAL(z_resolution);
         WRITE_OPTIONAL(rows);
         WRITE_OPTIONAL(columns);
         WRITE_OPTIONAL(largest_contour_interval);
@@ -120,13 +127,19 @@ namespace DemReader
         result.vertical_unit = reader.read_int16(6);
         result.polygon_sides = reader.read_int16(6);
         for (auto& corner : result.quadrangle_corners)
-            corner = reader.read_float64(24);
+        {
+            auto n = reader.read_float64(24);
+            auto e = reader.read_float64(24);
+            if (n && e)
+                corner = {*n, *e};
+        }
         result.min_elevation = reader.read_float64(24);
         result.max_elevation = reader.read_float64(24);
         result.rotation_angle = reader.read_float64(24);
         result.elevation_accuracy = reader.read_int16(6);
-        for (auto& res : result.spatial_resolution)
-            res = reader.read_float32(12);
+        result.x_resolution = reader.read_float32(12);
+        result.y_resolution = reader.read_float32(12);
+        result.z_resolution = reader.read_float32(12);
         result.rows = reader.read_int16(6);
         result.columns = reader.read_int16(6);
         result.largest_contour_interval = reader.read_int16(5);

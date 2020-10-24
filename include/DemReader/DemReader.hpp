@@ -9,21 +9,28 @@
 #include <iosfwd>
 #include <vector>
 #include <optional>
+#include "DemFileInfo.hpp"
 
 namespace DemReader
 {
-    struct DemPosition
+    struct GridPosition
     {
-        int16_t row;
-        int16_t column;
-        int16_t rows;
-        int16_t columns;
+        int16_t row = 0;
+        int16_t column = 0;
+    };
+
+    struct GridExtent
+    {
+        GridPosition position;
+        GridSize size;
     };
 
     struct ElevationData
     {
-        DemPosition position;
-        std::vector<double> elevations;
+        GridExtent extent;
+        double offset;
+        double factor;
+        std::vector<int32_t> elevations;
     };
 
     class DemReader
@@ -37,8 +44,9 @@ namespace DemReader
 
         DemReader& operator=(DemReader&& rhs) noexcept;
 
-        std::optional<ElevationData> read_next();
+        DemFileInfo file_info() const;
 
+        std::optional<ElevationData> read_next();
     private:
         struct Data;
         std::unique_ptr<Data> m_Data;
