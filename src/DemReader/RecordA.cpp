@@ -9,6 +9,7 @@
 
 #include <ostream>
 #include "FortranReader.hpp"
+#include "PrintMacros.hpp"
 
 namespace Dem
 {
@@ -20,35 +21,8 @@ namespace Dem
 
     std::ostream& operator<<(std::ostream& os, const CartesianCoordinates& cc)
     {
-        return os << cc.northing << ' ' << cc.easting;
+        return os << cc.easting << ' ' << cc.northing;
     }
-
-    #define WRITE_STRING(name) \
-        do { \
-            if (!rec.name.empty()) \
-                os << #name ": " << rec.name << '\n'; \
-        } while (false)
-
-    #define WRITE_OPTIONAL(name) \
-        do { \
-            if (rec.name) \
-                os << #name ": " << *rec.name << '\n'; \
-        } while (false)
-
-    #define CAST_AND_WRITE_OPTIONAL(name, type) \
-        do { \
-            if (rec.name) \
-                os << #name ": " << type(*rec.name) << '\n'; \
-        } while (false)
-
-    #define WRITE_ARRAY(name) \
-        do { \
-            for (int i = 0; i < std::size(rec.name); ++i) \
-            { \
-                if (rec.name[i]) \
-                    os << #name "[" << i << "]: " << *rec.name[i] << '\n'; \
-            } \
-        } while (false)
 
     void print(const RecordA& rec, std::ostream& os)
     {
@@ -128,10 +102,10 @@ namespace Dem
         result.polygon_sides = reader.read_int16(6);
         for (auto& corner : result.quadrangle_corners)
         {
-            auto n = reader.read_float64(24);
             auto e = reader.read_float64(24);
-            if (n && e)
-                corner = {*n, *e};
+            auto n = reader.read_float64(24);
+            if (e && n)
+                corner = {*e, *n};
         }
         result.min_elevation = reader.read_float64(24);
         result.max_elevation = reader.read_float64(24);

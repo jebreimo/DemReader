@@ -11,6 +11,7 @@
 #include <iosfwd>
 #include <optional>
 #include <string>
+#include "GridLib/Unit.hpp"
 
 namespace Dem
 {
@@ -23,8 +24,8 @@ namespace Dem
 
     struct CartesianCoordinates
     {
-        double northing = 0;
         double easting = 0;
+        double northing = 0;
     };
 
     struct RecordA

@@ -7,7 +7,9 @@
 //****************************************************************************
 
 #include "DemReader/RecordC.hpp"
+
 #include "FortranReader.hpp"
+#include "PrintMacros.hpp"
 
 namespace Dem
 {
@@ -24,5 +26,19 @@ namespace Dem
         result.dem_rmse_sample_size = reader.read_int16(6);
         reader.skip(60);
         return result;
+    }
+
+    void print(const RecordC& rec, std::ostream& os)
+    {
+        if (rec.has_datum_rmse)
+        {
+            WRITE_OPTIONAL(has_datum_rmse);
+            WRITE_ARRAY(datum_rmse);
+        }
+        if (rec.has_dem_rmse)
+        {
+            WRITE_OPTIONAL(has_dem_rmse);
+            WRITE_ARRAY(dem_rmse);
+        }
     }
 }

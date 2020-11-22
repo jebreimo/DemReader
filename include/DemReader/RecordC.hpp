@@ -8,6 +8,7 @@
 #pragma once
 
 #include <cstdint>
+#include <iosfwd>
 #include <optional>
 
 namespace Dem
@@ -26,4 +27,6 @@ namespace Dem
 
     [[nodiscard]]
     RecordC read_record_c(FortranReader& reader);
+
+    void print(const RecordC& rec, std::ostream& os);
 }

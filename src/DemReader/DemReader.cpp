@@ -62,7 +62,7 @@ namespace Dem
 
         try
         {
-            m_Data->a = ::Dem::read_record_a(m_Data->reader);
+            m_Data->a = Dem::read_record_a(m_Data->reader);
         }
         catch (std::exception& ex)
         {
@@ -91,7 +91,7 @@ namespace Dem
 
         try
         {
-            return ::Dem::read_record_b(m_Data->reader);
+            return Dem::read_record_b(m_Data->reader);
         }
         catch (std::exception& ex)
         {
@@ -109,7 +109,7 @@ namespace Dem
 
         try
         {
-            m_Data->c = ::Dem::read_record_c(m_Data->reader);
+            m_Data->c = Dem::read_record_c(m_Data->reader);
         }
         catch (std::exception& ex)
         {
