@@ -20,22 +20,30 @@ function(GridLib_enable_all_warnings target)
 endfunction()
 
 add_library(GridLib
-    include/GridLib/GridRect.hpp
     include/GridLib/Array2D.hpp
     include/GridLib/ArrayView2D.hpp
     include/GridLib/BitArray2D.hpp
     include/GridLib/BitArrayView2D.hpp
-    src/GridLib/Grid.cpp
     include/GridLib/Grid.hpp
+    include/GridLib/GridRect.hpp
     include/GridLib/MutableArrayView2D.hpp
     include/GridLib/MutableBitArrayView2D.hpp
     include/GridLib/Unit.hpp
+    include/GridLib/WriteGrid.hpp
+    src/GridLib/Grid.cpp
     src/GridLib/GridRect.cpp
+    src/GridLib/Unit.cpp
+    src/GridLib/WriteGrid.cpp
     )
 
 target_include_directories(GridLib
     PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/include
+    )
+
+target_link_libraries(GridLib
+    PRIVATE
+        Yson::Yson
     )
 
 add_library(GridLib::GridLib ALIAS GridLib)

@@ -106,6 +106,17 @@ namespace GridLib
         return *this;
     }
 
+    RotationDir Grid::axisOrientation() const
+    {
+        return m_AxisOrientation;
+    }
+
+    Grid& Grid::setAxisOrientation(RotationDir dir)
+    {
+        m_AxisOrientation = dir;
+        return *this;
+    }
+
     const ReferenceSystem& Grid::referenceSystem() const
     {
         return m_ReferenceSystem;

@@ -41,6 +41,12 @@ namespace GridLib
         int vertical = 0;
     };
 
+    enum class RotationDir
+    {
+        CLOCKWISE,
+        COUNTER_CLOCKWISE
+    };
+
     class Grid
     {
     public:
@@ -85,13 +91,30 @@ namespace GridLib
         [[nodiscard]]
         double rotationAngle() const;
 
+        /**
+         * @brief Set the ccw angle that the row (major) axis has been
+         * rotated relative to due east.
+         *
+         * North is zero degrees.
+         * @param angle The counter-clockwise angle from due east in radians.
+         */
         Grid& setRotationAngle(double angle);
+
+        [[nodiscard]]
+        RotationDir axisOrientation() const;
+
+        /**
+         * @brief Set the orientation of the column (minor) axis relative to
+         *  the row (major) axis.
+         */
+        Grid& setAxisOrientation(RotationDir dir);
 
         [[nodiscard]]
         const ReferenceSystem& referenceSystem() const;
 
         Grid& setReferenceSystem(const ReferenceSystem& system);
 
+        [[nodiscard]]
         std::pair<Array2D<double>, BitArray2D> release();
     private:
         Array2D<double> m_Grid;
@@ -100,5 +123,6 @@ namespace GridLib
         Coords m_Location;
         double m_RotationAngle = 0;
         ReferenceSystem m_ReferenceSystem;
+        RotationDir m_AxisOrientation = RotationDir::COUNTER_CLOCKWISE;
     };
 }

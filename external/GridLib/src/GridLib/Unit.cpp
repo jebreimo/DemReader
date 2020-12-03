@@ -9,4 +9,17 @@
 
 namespace GridLib
 {
+    #define TO_STRING(name) \
+        case Unit::name: return #name
+
+    const char* toString(Unit unit)
+    {
+        switch (unit)
+        {
+        TO_STRING(FEET);
+        TO_STRING(METERS);
+        TO_STRING(ARC_SECONDS);
+        default: return "UNDEFINED";
+        }
+    }
 }

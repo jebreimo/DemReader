@@ -7,21 +7,16 @@
 //****************************************************************************
 #pragma once
 #include <vector>
+#include <GridLib/Grid.hpp>
 #include <GridLib/GridRect.hpp>
 #include "GridLib/Unit.hpp"
 
 namespace Dem
 {
-    struct DemGrid
-    {
-        GridLib::GridSize size;
-        std::vector<double> values;
-        std::vector<uint64_t> missing_values;
-        Unit x_unit;
-        Unit y_unit;
-    };
+    GridLib::Grid read_dem_grid(std::istream& stream,
+                                GridLib::Unit vertical_unit);
 
-    DemGrid read_dem_grid(std::istream& stream,
-                          Unit vertical_unit,
-                          GridLib::GridRect rectangle);
+    GridLib::Grid read_dem_grid(std::istream& stream,
+                                GridLib::Unit desired_unit,
+                                GridLib::GridRect rectangle);
 }

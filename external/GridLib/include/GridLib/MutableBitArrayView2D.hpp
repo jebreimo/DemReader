@@ -15,6 +15,8 @@ namespace GridLib
     class MutableBitArrayView2D
     {
     public:
+        MutableBitArrayView2D() = default;
+
         MutableBitArrayView2D(unsigned rows, unsigned columns, uint32_t* bits)
             : m_Bits(bits),
               m_Size(rows, columns)
