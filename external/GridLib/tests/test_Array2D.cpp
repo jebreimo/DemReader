@@ -23,7 +23,7 @@ TEST_CASE("ArrayView2D")
     REQUIRE(grid(2, 2) == values[8]);
 }
 
-TEST_CASE("Add rows to ArrayView")
+TEST_CASE("Add rows to Array2D")
 {
     std::vector<int32_t> values = {
         1, 2, 3,
@@ -43,7 +43,7 @@ TEST_CASE("Add rows to ArrayView")
     REQUIRE(grid(4, 2) == 0);
 }
 
-TEST_CASE("Remove columns from ArrayView")
+TEST_CASE("Remove columns from Array2D")
 {
     std::vector<int32_t> values = {
         1, 2, 3, 4, 5,
@@ -62,4 +62,12 @@ TEST_CASE("Remove columns from ArrayView")
     REQUIRE(grid(1, 2) == 8);
     REQUIRE(grid(2, 0) == 1);
     REQUIRE(grid(2, 2) == 3);
+}
+
+TEST_CASE("Resize empty Array2D")
+{
+    GridLib::Array2D<int32_t> grid;
+    grid.resize(3, 3);
+    REQUIRE(grid.rows() == 3);
+    REQUIRE(grid.columns() == 3);
 }

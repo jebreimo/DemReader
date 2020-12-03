@@ -96,6 +96,10 @@ namespace GridLib
             auto newSize = rows * columns;
             m_Buffer.resize(newSize);
             m_Size = {rows, columns};
+
+            if (oldRows == 0)
+                return;
+
             if (columns > oldColumns)
             {
                 auto src = m_Buffer.data() + oldSize - 1;
