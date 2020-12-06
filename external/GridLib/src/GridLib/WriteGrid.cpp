@@ -12,7 +12,7 @@ namespace GridLib
 {
     namespace
     {
-        void writeAxis(Yson::JsonWriter& writer, const Axis& axis)
+        void writeAxis(Yson::Writer& writer, const Axis& axis)
         {
             writer.beginObject();
             writer.key("unit").value(toString(axis.unit));
@@ -20,17 +20,30 @@ namespace GridLib
             writer.endObject();
         }
 
-        void writeMetadata(Yson::JsonWriter& writer, const Grid& grid)
+        void writeMetadata(Yson::Writer& writer, const Grid& grid)
         {
             writer.beginObject();
-            writer.key("row axis");
+            writer.key("rows").value(uint64_t(grid.rows()));
+            writer.key("columns").value(uint64_t(grid.columns()));
+            writer.key("row_axis");
             writeAxis(writer, grid.rowAxis());
-            writer.key("column axis");
+            writer.key("column_axis");
             writeAxis(writer, grid.columnAxis());
-            writer.key("vertical axis");
+            writer.key("vertical_axis");
             writeAxis(writer, grid.verticalAxis());
-            writer.key("rotation angle").value(grid.rotationAngle());
+            writer.key("rotation_angle").value(grid.rotationAngle());
+            if (grid.axisOrientation() != RotationDir::COUNTER_CLOCKWISE)
+                writer.key("axis_orientation").value("CLOCKWISE");
             writer.endObject();
+        }
+
+        void writeElevations(Yson::Writer& writer,
+                             const ArrayView2D<double>& values,
+                             const BitArrayView2D& unknown)
+        {
+            writer.beginArray();
+
+            writer.endArray();
         }
     }
 
@@ -38,6 +51,7 @@ namespace GridLib
     {
         Yson::JsonWriter writer(stream, Yson::JsonFormatting::FORMAT);
         writer.beginObject();
+        writer.key("metadata");
         writeMetadata(writer, grid);
         writer.endObject();
     }

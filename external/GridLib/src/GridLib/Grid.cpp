@@ -22,6 +22,16 @@ namespace GridLib
         m_Unknown.fill(false);
     }
 
+    size_t Grid::rows() const
+    {
+        return m_Grid.rows();
+    }
+
+    size_t Grid::columns() const
+    {
+        return m_Grid.columns();
+    }
+
     void Grid::resize(size_t rows, size_t columns)
     {
         m_Grid.resize(rows, columns);

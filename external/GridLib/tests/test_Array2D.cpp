@@ -71,3 +71,22 @@ TEST_CASE("Resize empty Array2D")
     REQUIRE(grid.rows() == 3);
     REQUIRE(grid.columns() == 3);
 }
+
+TEST_CASE("Iterate over an Array2D")
+{
+    std::vector<int32_t> values = {
+        0, 2, 0,
+        3, 4, 3,
+        0, 2, 0
+    };
+
+    GridLib::Array2D<int32_t> grid(3, 3, values);
+    auto it = values.begin();
+    for (auto row : grid)
+    {
+        for (auto value : row)
+        {
+            REQUIRE(value == *it++);
+        }
+    }
+}

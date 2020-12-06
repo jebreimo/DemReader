@@ -10,6 +10,12 @@ project(GridLib)
 
 set(CMAKE_CXX_STANDARD 17)
 
+include(FetchContent)
+FetchContent_Declare(yson
+    GIT_REPOSITORY "https://github.com/jebreimo/Yson.git"
+    GIT_TAG v1.0.5)
+FetchContent_MakeAvailable(yson)
+
 function(GridLib_enable_all_warnings target)
     target_compile_options(${target}
         PRIVATE
@@ -34,7 +40,7 @@ add_library(GridLib
     src/GridLib/GridRect.cpp
     src/GridLib/Unit.cpp
     src/GridLib/WriteGrid.cpp
-    )
+    include/GridLib/ArrayView.hpp include/GridLib/MutableArrayView.hpp include/GridLib/RowIterator.hpp)
 
 target_include_directories(GridLib
     PUBLIC

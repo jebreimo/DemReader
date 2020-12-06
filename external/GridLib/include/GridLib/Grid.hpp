@@ -56,6 +56,12 @@ namespace GridLib
 
         void clear();
 
+        [[nodiscard]]
+        size_t rows() const;
+
+        [[nodiscard]]
+        size_t columns() const;
+
         void resize(size_t rows, size_t columns);
 
         [[nodiscard]]

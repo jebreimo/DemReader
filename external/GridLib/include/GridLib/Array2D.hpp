@@ -8,7 +8,7 @@
 #pragma once
 #include <stdexcept>
 #include <vector>
-#include "ArrayView2D.hpp"
+#include "MutableArrayView2D.hpp"
 
 namespace GridLib
 {
@@ -16,8 +16,8 @@ namespace GridLib
     class Array2D
     {
     public:
-        typedef typename std::vector<T>::iterator iterator;
-        typedef typename std::vector<T>::const_iterator const_iterator;
+        using MutableIterator = RowIterator<T, true>;
+        using ConstIterator = RowIterator<T>;
 
         Array2D() = default;
 
@@ -39,9 +39,34 @@ namespace GridLib
                 throw std::runtime_error("Array2D has incorrect size.");
         }
 
-        operator ArrayView2D<T>() const noexcept
+        constexpr operator ArrayView<T>() const noexcept
         {
-            return ArrayView2D<T>(rows(), columns(), data());
+            return {m_Buffer.data(), size()};
+        }
+
+        constexpr operator MutableArrayView<T>() const noexcept
+        {
+            return {m_Buffer.data(), size()};
+        }
+
+        constexpr operator ArrayView2D<T>() const noexcept
+        {
+            return {rows(), columns(), data()};
+        }
+
+        operator MutableArrayView2D<T>() noexcept
+        {
+            return {rows(), columns(), data()};
+        }
+
+        constexpr MutableArrayView<T> operator[](size_t row)
+        {
+            return {m_Buffer.data() + row * m_Size.second, m_Size.second};
+        }
+
+        constexpr ArrayView<T> operator[](size_t row) const
+        {
+            return {m_Buffer.data() + row * m_Size.second, m_Size.second};
         }
 
         const T& operator()(size_t row, size_t column) const noexcept
@@ -125,24 +150,28 @@ namespace GridLib
             }
         }
 
-        iterator begin() noexcept
+        [[nodiscard]]
+        MutableIterator begin() noexcept
         {
-            return m_Buffer.begin();
+            return MutableIterator(MutableArrayView<T>{m_Buffer.data(), m_Size.second});
         }
 
-        const_iterator begin() const noexcept
+        [[nodiscard]]
+        ConstIterator begin() const noexcept
         {
-            return m_Buffer.begin();
+            return ConstIterator({m_Buffer.data(), m_Size.second});
         }
 
-        iterator end() noexcept
+        [[nodiscard]]
+        MutableIterator end() noexcept
         {
-            return m_Buffer.end();
+            return MutableIterator({m_Buffer.data() + m_Buffer.size(), m_Size.second});
         }
 
-        const_iterator end() const noexcept
+        [[nodiscard]]
+        ConstIterator end() const noexcept
         {
-            return m_Buffer.end();
+            return ConstIterator({m_Buffer.data() + m_Buffer.size(), m_Size.second});
         }
 
         [[nodiscard]]

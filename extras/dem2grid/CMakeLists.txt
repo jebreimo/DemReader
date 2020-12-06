@@ -14,10 +14,7 @@ include(FetchContent)
 FetchContent_Declare(argos
     GIT_REPOSITORY "https://github.com/jebreimo/Argos.git"
     GIT_TAG v0.99.19)
-FetchContent_Declare(yson
-    GIT_REPOSITORY "https://github.com/jebreimo/Yson.git"
-    GIT_TAG v1.0.5)
-FetchContent_MakeAvailable(argos yson)
+FetchContent_MakeAvailable(argos)
 
 add_executable(dem2grid
     src/dem2grid.cpp
@@ -27,5 +24,4 @@ target_link_libraries(dem2grid
     PRIVATE
         Argos::Argos
         Dem::DemReader
-        Yson::Yson
     )

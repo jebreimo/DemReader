@@ -28,9 +28,15 @@ namespace Dem
         }
     }
 
-    GridLib::Grid Dem::read_dem_grid(std::istream& stream,
-                                     GridLib::Unit desired_unit,
-                                     GridLib::GridRect rectangle)
+    GridLib::Grid read_dem_grid(std::istream& stream, GridLib::Unit vertical_unit)
+    {
+        return read_dem_grid(stream, vertical_unit,
+                             {{0, 0}, {UINT_MAX, UINT_MAX}});
+    }
+
+    GridLib::Grid read_dem_grid(std::istream& stream,
+                                GridLib::Unit desired_unit,
+                                GridLib::GridRect rectangle)
     {
         GridLib::Grid grid;
         Dem::DemReader reader(stream);
