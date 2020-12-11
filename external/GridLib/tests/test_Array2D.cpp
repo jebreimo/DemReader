@@ -16,7 +16,7 @@ TEST_CASE("ArrayView2D")
         0, 2, 0
     };
 
-    GridLib::ArrayView2D<int32_t> grid(3, 3, values.data());
+    GridLib::ArrayView2D<int32_t> grid(values.data(), 3, 3);
     REQUIRE(grid(0, 0) == values[0]);
     REQUIRE(grid(1, 0) == values[3]);
     REQUIRE(grid(2, 1) == values[7]);
@@ -31,7 +31,7 @@ TEST_CASE("Add rows to Array2D")
         7, 8, 9
     };
 
-    GridLib::Array2D<int32_t> grid(3, 3, move(values));
+    GridLib::Array2D<int32_t> grid(move(values), 3, 3);
     grid.resize(5, 3);
     REQUIRE(grid.rows() == 5);
     REQUIRE(grid.columns() == 3);
@@ -52,7 +52,7 @@ TEST_CASE("Remove columns from Array2D")
         6, 7, 8, 9, 0
     };
 
-    GridLib::Array2D<int32_t> grid(4, 5, move(values));
+    GridLib::Array2D<int32_t> grid(move(values), 4, 5);
     grid.resize(3, 3);
     REQUIRE(grid.rows() == 3);
     REQUIRE(grid.columns() == 3);
@@ -80,7 +80,7 @@ TEST_CASE("Iterate over an Array2D")
         0, 2, 0
     };
 
-    GridLib::Array2D<int32_t> grid(3, 3, values);
+    GridLib::Array2D<int32_t> grid(values, 3, 3);
     auto it = values.begin();
     for (auto row : grid)
     {

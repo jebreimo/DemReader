@@ -18,7 +18,7 @@ namespace GridLib
     public:
         constexpr ArrayView2D() = default;
 
-        constexpr ArrayView2D(size_t rows, size_t columns, const T* data) noexcept
+        constexpr ArrayView2D(const T* data, size_t rows, size_t columns) noexcept
             : m_Data(data),
               m_Size(rows, columns)
         {}

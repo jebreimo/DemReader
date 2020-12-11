@@ -45,8 +45,8 @@ namespace GridLib
 
     MutableArrayView2D<double> Grid::elevations()
     {
-        return MutableArrayView2D(m_Grid.rows(), m_Grid.columns(),
-                                  m_Grid.data());
+        return MutableArrayView2D(m_Grid.data(),
+                                  m_Grid.rows(), m_Grid.columns());
     }
 
     BitArrayView2D Grid::unknownElevations() const

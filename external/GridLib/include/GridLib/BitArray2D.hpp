@@ -25,7 +25,7 @@ namespace GridLib
         [[nodiscard]]
         operator BitArrayView2D() const
         {
-            return BitArrayView2D(m_Size.first, m_Size.second, m_Bits.data());
+            return BitArrayView2D(m_Bits.data(), m_Size.first, m_Size.second);
         }
 
         [[nodiscard]]

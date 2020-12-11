@@ -17,7 +17,7 @@ namespace GridLib
     public:
         BitArrayView2D() = default;
 
-        BitArrayView2D(unsigned rows, unsigned columns, const uint32_t* bits)
+        BitArrayView2D(const uint32_t* bits, unsigned rows, unsigned columns)
             : m_Bits(bits),
               m_Size(rows, columns)
         {}

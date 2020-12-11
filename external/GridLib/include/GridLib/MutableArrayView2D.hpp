@@ -21,7 +21,7 @@ namespace GridLib
 
         MutableArrayView2D() = default;
 
-        MutableArrayView2D(size_t rows, size_t columns, T* values)
+        MutableArrayView2D(T* values, size_t rows, size_t columns)
             : m_Data(values),
               m_Size(rows, columns)
         {}
@@ -38,7 +38,7 @@ namespace GridLib
 
         constexpr operator ArrayView2D<T>() const noexcept
         {
-            return {m_Size.first, m_Size.second, m_Data};
+            return {m_Data, m_Size.first, m_Size.second};
         }
 
         constexpr MutableArrayView<T> operator[](size_t row)
