@@ -6,6 +6,7 @@
 // License text is included with the source distribution.
 //****************************************************************************
 #pragma once
+#include <optional>
 #include <variant>
 #include "Array2D.hpp"
 #include "BitArray2D.hpp"
@@ -33,8 +34,6 @@ namespace GridLib
         double easting = 0;
     };
 
-    using Coords = std::variant<PlanarCoords, SphericalCoords>;
-
     struct ReferenceSystem
     {
         int horizontal = 0;
@@ -44,7 +43,7 @@ namespace GridLib
     enum class RotationDir
     {
         CLOCKWISE,
-        COUNTER_CLOCKWISE
+        COUNTERCLOCKWISE
     };
 
     class Grid
@@ -70,9 +69,9 @@ namespace GridLib
         MutableArrayView2D<double> elevations();
 
         [[nodiscard]]
-        BitArrayView2D unknownElevations() const;
+        std::optional<double> unknownElevation() const;
 
-        MutableBitArrayView2D unknownElevations();
+        Grid& setUnknownElevation(std::optional<double> value);
 
         [[nodiscard]]
         const Axis& rowAxis() const;
@@ -90,9 +89,14 @@ namespace GridLib
         Grid& setVerticalAxis(const Axis& axis);
 
         [[nodiscard]]
-        const Coords& location() const;
+        const std::optional<SphericalCoords>& sphericalCoords() const;
 
-        Grid& setLocation(const Coords& coords);
+        Grid& setSphericalCoords(const std::optional<SphericalCoords>& coords);
+
+        [[nodiscard]]
+        const std::optional<PlanarCoords>& planarCoords() const;
+
+        Grid& setPlanarCoords(const std::optional<PlanarCoords>& coords);
 
         [[nodiscard]]
         double rotationAngle() const;
@@ -116,19 +120,20 @@ namespace GridLib
         Grid& setAxisOrientation(RotationDir dir);
 
         [[nodiscard]]
-        const ReferenceSystem& referenceSystem() const;
+        const std::optional<ReferenceSystem>& referenceSystem() const;
 
-        Grid& setReferenceSystem(const ReferenceSystem& system);
+        Grid& setReferenceSystem(std::optional<ReferenceSystem> system);
 
         [[nodiscard]]
-        std::pair<Array2D<double>, BitArray2D> release();
+        Array2D<double> release();
     private:
         Array2D<double> m_Grid;
-        BitArray2D m_Unknown;
+        std::optional<double> m_UnknownElevation;
         Axis m_Axis[3];
-        Coords m_Location;
+        std::optional<SphericalCoords> m_SphericalCoords;
+        std::optional<PlanarCoords> m_PlanarCoords;
         double m_RotationAngle = 0;
-        ReferenceSystem m_ReferenceSystem;
-        RotationDir m_AxisOrientation = RotationDir::COUNTER_CLOCKWISE;
+        std::optional<ReferenceSystem> m_ReferenceSystem;
+        RotationDir m_AxisOrientation = RotationDir::COUNTERCLOCKWISE;
     };
 }

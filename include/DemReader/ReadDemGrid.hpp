@@ -6,6 +6,7 @@
 // License text is included with the source distribution.
 //****************************************************************************
 #pragma once
+#include <functional>
 #include <vector>
 #include <GridLib/Grid.hpp>
 #include <GridLib/GridRect.hpp>
@@ -13,10 +14,9 @@
 
 namespace Dem
 {
-    GridLib::Grid read_dem_grid(std::istream& stream,
-                                GridLib::Unit vertical_unit);
+    using ProgressCallback = std::function<bool (size_t, size_t)>;
 
     GridLib::Grid read_dem_grid(std::istream& stream,
-                                GridLib::Unit desired_unit,
-                                GridLib::GridRect rectangle);
+                                GridLib::Unit vertical_unit,
+                                ProgressCallback progress_callback = {});
 }

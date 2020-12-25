@@ -32,17 +32,58 @@ namespace GridLib
             writer.key("vertical_axis");
             writeAxis(writer, grid.verticalAxis());
             writer.key("rotation_angle").value(grid.rotationAngle());
-            if (grid.axisOrientation() != RotationDir::COUNTER_CLOCKWISE)
+
+            if (grid.axisOrientation() != RotationDir::COUNTERCLOCKWISE)
                 writer.key("axis_orientation").value("CLOCKWISE");
+
+            if (const auto& coords = grid.planarCoords())
+            {
+                writer.key("planar_location")
+                    .beginObject(Yson::JsonParameters(2))
+                    .key("northing").value(coords->northing)
+                    .key("easting").value(coords->easting)
+                    .endObject();
+            }
+
+            if (const auto& coords = grid.sphericalCoords())
+            {
+                writer.key("spherical_location")
+                    .beginObject(Yson::JsonParameters(2))
+                    .key("latitude").value(coords->latitude)
+                    .key("longitude").value(coords->longitude)
+                    .endObject();
+            }
+
+            if (const auto& refSys = grid.referenceSystem())
+            {
+                writer.key("reference_system")
+                    .beginObject(Yson::JsonParameters(2))
+                    .key("horizontal_system").value(refSys->horizontal);
+                if (refSys->vertical)
+                    writer.key("vertical_system").value(refSys->vertical);
+                writer.endObject();
+            }
+
             writer.endObject();
         }
 
         void writeElevations(Yson::Writer& writer,
                              const ArrayView2D<double>& values,
-                             const BitArrayView2D& unknown)
+                             std::optional<double> unknownElevation)
         {
             writer.beginArray();
-
+            for (const auto& row : values)
+            {
+                writer.beginArray(Yson::JsonParameters(10));
+                for (const auto& value : row)
+                {
+                    if (!unknownElevation || value != *unknownElevation)
+                        writer.value(value);
+                    else
+                        writer.null();
+                }
+                writer.endArray();
+            }
             writer.endArray();
         }
     }
@@ -53,6 +94,7 @@ namespace GridLib
         writer.beginObject();
         writer.key("metadata");
         writeMetadata(writer, grid);
+        writeElevations(writer, grid.elevations(), grid.unknownElevation());
         writer.endObject();
     }
 }

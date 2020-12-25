@@ -75,7 +75,7 @@ namespace GridLib
         [[nodiscard]]
         RowIterator<T> begin() const
         {
-            return RowIterator<T>({m_Data, m_Size});
+            return RowIterator<T>({m_Data, columnCount()});
         }
 
         [[nodiscard]]

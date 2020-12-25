@@ -12,14 +12,12 @@ namespace GridLib
     Grid::Grid() = default;
 
     Grid::Grid(size_t rows, size_t columns)
-        : m_Grid(rows, columns),
-          m_Unknown(rows, columns)
+        : m_Grid(rows, columns)
     {}
 
     void Grid::clear()
     {
         m_Grid.fill(0);
-        m_Unknown.fill(false);
     }
 
     size_t Grid::rows() const
@@ -35,7 +33,6 @@ namespace GridLib
     void Grid::resize(size_t rows, size_t columns)
     {
         m_Grid.resize(rows, columns);
-        m_Unknown.resize(rows, columns);
     }
 
     ArrayView2D<double> Grid::elevations() const
@@ -49,16 +46,15 @@ namespace GridLib
                                   m_Grid.rows(), m_Grid.columns());
     }
 
-    BitArrayView2D Grid::unknownElevations() const
+    std::optional<double> Grid::unknownElevation() const
     {
-        return m_Unknown;
+        return m_UnknownElevation;
     }
 
-    MutableBitArrayView2D Grid::unknownElevations()
+    Grid& Grid::setUnknownElevation(std::optional<double> elevation)
     {
-        return MutableBitArrayView2D(m_Unknown.rows(),
-                                     m_Unknown.columns(),
-                                     m_Unknown.data());
+        m_UnknownElevation = elevation;
+        return *this;
     }
 
     const Axis& Grid::rowAxis() const
@@ -94,14 +90,25 @@ namespace GridLib
         return *this;
     }
 
-    const Coords& Grid::location() const
+    const std::optional<SphericalCoords>& Grid::sphericalCoords() const
     {
-        return m_Location;
+        return m_SphericalCoords;
     }
 
-    Grid& Grid::setLocation(const Coords& coords)
+    Grid& Grid::setSphericalCoords(const std::optional<SphericalCoords>& coords)
     {
-        m_Location = coords;
+        m_SphericalCoords = coords;
+        return *this;
+    }
+
+    const std::optional<PlanarCoords>& Grid::planarCoords() const
+    {
+        return m_PlanarCoords;
+    }
+
+    Grid& Grid::setPlanarCoords(const std::optional<PlanarCoords>& coords)
+    {
+        m_PlanarCoords = coords;
         return *this;
     }
 
@@ -127,21 +134,19 @@ namespace GridLib
         return *this;
     }
 
-    const ReferenceSystem& Grid::referenceSystem() const
+    const std::optional<ReferenceSystem>& Grid::referenceSystem() const
     {
         return m_ReferenceSystem;
     }
 
-    Grid& Grid::setReferenceSystem(const ReferenceSystem& system)
+    Grid& Grid::setReferenceSystem(std::optional<ReferenceSystem> system)
     {
         m_ReferenceSystem = system;
         return *this;
     }
 
-    std::pair<Array2D<double>, BitArray2D> Grid::release()
+    Array2D<double> Grid::release()
     {
-        std::pair<Array2D<double>, BitArray2D> p = {
-            std::move(m_Grid), std::move(m_Unknown)};
-        return p;
+        return std::move(m_Grid);
     }
 }

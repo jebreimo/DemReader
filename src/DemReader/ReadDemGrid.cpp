@@ -28,15 +28,9 @@ namespace Dem
         }
     }
 
-    GridLib::Grid read_dem_grid(std::istream& stream, GridLib::Unit vertical_unit)
-    {
-        return read_dem_grid(stream, vertical_unit,
-                             {{0, 0}, {UINT_MAX, UINT_MAX}});
-    }
-
     GridLib::Grid read_dem_grid(std::istream& stream,
                                 GridLib::Unit desired_unit,
-                                GridLib::GridRect rectangle)
+                                ProgressCallback progress_callback)
     {
         GridLib::Grid grid;
         Dem::DemReader reader(stream);
@@ -96,9 +90,9 @@ namespace Dem
         grid.setRowAxis({rRes, hUnit});
         grid.setColumnAxis({cRes, hUnit});
         grid.setRotationAngle(a.rotation_angle.value_or(0));
+        grid.setUnknownElevation(UNKNOWN * factor);
 
         GridLib::MutableArrayView2D<double> values;
-        GridLib::MutableBitArrayView2D unknown;
         auto rows = a.rows.value_or(1);
         auto cols = a.columns.value_or(1);
         while (auto b = reader.next_record_b())
@@ -107,22 +101,20 @@ namespace Dem
             {
                 if (rows == 1)
                     rows = b->rows;
-                // DEM files uses columns as the major axis.
+                // DEM files uses columns (x) as the major axis.
                 grid.resize(cols, rows);
                 values = grid.elevations();
-                unknown = grid.unknownElevations();
             }
             for (int i = 0; i < b->columns; ++i)
             {
                 for (int j = 0; j < b->rows; ++j)
                 {
                     auto elev = b->elevations[i];
-                    if (elev != UNKNOWN)
-                        values(i + b->column, j + b->row) = elev * factor;
-                    else
-                        unknown.set(i + b->column, j + b->row, true);
+                    values(i + b->column - 1, j + b->row - 1) = elev * factor;
                 }
             }
+            if (progress_callback && !progress_callback(b->column, cols))
+                return {};
         }
 
         return grid;
