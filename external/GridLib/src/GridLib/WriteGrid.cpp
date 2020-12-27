@@ -39,16 +39,17 @@ namespace GridLib
             if (const auto& coords = grid.planarCoords())
             {
                 writer.key("planar_location")
-                    .beginObject(Yson::JsonParameters(2))
+                    .beginObject()
                     .key("northing").value(coords->northing)
                     .key("easting").value(coords->easting)
+                    .key("zone").value(coords->zone)
                     .endObject();
             }
 
             if (const auto& coords = grid.sphericalCoords())
             {
                 writer.key("spherical_location")
-                    .beginObject(Yson::JsonParameters(2))
+                    .beginObject()
                     .key("latitude").value(coords->latitude)
                     .key("longitude").value(coords->longitude)
                     .endObject();
@@ -57,7 +58,7 @@ namespace GridLib
             if (const auto& refSys = grid.referenceSystem())
             {
                 writer.key("reference_system")
-                    .beginObject(Yson::JsonParameters(2))
+                    .beginObject()
                     .key("horizontal_system").value(refSys->horizontal);
                 if (refSys->vertical)
                     writer.key("vertical_system").value(refSys->vertical);
@@ -68,7 +69,7 @@ namespace GridLib
         }
 
         void writeElevations(Yson::Writer& writer,
-                             const ArrayView2D<double>& values,
+                             const Array2DView<double>& values,
                              std::optional<double> unknownElevation)
         {
             writer.beginArray();

@@ -27,13 +27,13 @@ endfunction()
 
 add_library(GridLib
     include/GridLib/Array2D.hpp
-    include/GridLib/ArrayView2D.hpp
+    include/GridLib/Array2DView.hpp
     include/GridLib/BitArray2D.hpp
-    include/GridLib/BitArrayView2D.hpp
+    include/GridLib/BitArray2DView.hpp
     include/GridLib/Grid.hpp
     include/GridLib/GridRect.hpp
-    include/GridLib/MutableArrayView2D.hpp
-    include/GridLib/MutableBitArrayView2D.hpp
+    include/GridLib/MutableArray2DView.hpp
+    include/GridLib/MutableBitArray2DView.hpp
     include/GridLib/Unit.hpp
     include/GridLib/WriteGrid.hpp
     src/GridLib/Grid.cpp

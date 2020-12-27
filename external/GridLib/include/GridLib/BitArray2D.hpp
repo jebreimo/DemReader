@@ -8,7 +8,7 @@
 #pragma once
 #include <algorithm>
 #include <vector>
-#include "BitArrayView2D.hpp"
+#include "BitArray2DView.hpp"
 
 namespace GridLib
 {
@@ -23,9 +23,9 @@ namespace GridLib
         {}
 
         [[nodiscard]]
-        operator BitArrayView2D() const
+        operator BitArray2DView() const
         {
-            return BitArrayView2D(m_Bits.data(), m_Size.first, m_Size.second);
+            return BitArray2DView(m_Bits.data(), m_Size.first, m_Size.second);
         }
 
         [[nodiscard]]

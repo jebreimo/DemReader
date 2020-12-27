@@ -13,17 +13,17 @@
 namespace GridLib
 {
     template <typename T>
-    class ArrayView2D
+    class Array2DView
     {
     public:
-        constexpr ArrayView2D() = default;
+        constexpr Array2DView() = default;
 
-        constexpr ArrayView2D(const T* data, size_t rows, size_t columns) noexcept
+        constexpr Array2DView(const T* data, size_t rows, size_t columns) noexcept
             : m_Data(data),
               m_Size(rows, columns)
         {}
 
-        constexpr operator ArrayView<T>() const noexcept
+        explicit constexpr operator ArrayView<T>() const noexcept
         {
             return ArrayView<T>(m_Data, size());
         }
@@ -89,7 +89,7 @@ namespace GridLib
     };
 
     template <typename T>
-    bool operator==(const ArrayView2D<T>& a, const ArrayView2D<T>& b)
+    bool operator==(const Array2DView<T>& a, const Array2DView<T>& b)
     {
         return a.rowCount() == b.rowCount()
                && a.columnCount() == b.columnCount()
@@ -97,7 +97,7 @@ namespace GridLib
     }
 
     template <typename T>
-    bool operator!=(const ArrayView2D<T>& a, const ArrayView2D<T>& b)
+    bool operator!=(const Array2DView<T>& a, const Array2DView<T>& b)
     {
         return !(a == b);
     }

@@ -8,20 +8,20 @@
 #pragma once
 #include <stdexcept>
 #include <vector>
-#include "ArrayView2D.hpp"
+#include "Array2DView.hpp"
 
 namespace GridLib
 {
     template <typename T>
-    class MutableArrayView2D
+    class MutableArray2DView
     {
     public:
         using MutableIterator = RowIterator<T, true>;
         using ConstIterator = RowIterator<T>;
 
-        MutableArrayView2D() = default;
+        MutableArray2DView() = default;
 
-        MutableArrayView2D(T* values, size_t rows, size_t columns)
+        MutableArray2DView(T* values, size_t rows, size_t columns)
             : m_Data(values),
               m_Size(rows, columns)
         {}
@@ -36,7 +36,7 @@ namespace GridLib
             return {m_Data, size()};
         }
 
-        constexpr operator ArrayView2D<T>() const noexcept
+        constexpr operator Array2DView<T>() const noexcept
         {
             return {m_Data, m_Size.first, m_Size.second};
         }
@@ -120,7 +120,7 @@ namespace GridLib
         }
 
         friend bool
-        operator==(const MutableArrayView2D& a, const MutableArrayView2D& b)
+        operator==(const MutableArray2DView& a, const MutableArray2DView& b)
         {
             return a.m_Size == b.m_Size
                    && (a.m_Data == b.m_Data
@@ -128,7 +128,7 @@ namespace GridLib
         }
 
         friend bool
-        operator!=(const MutableArrayView2D& a, const MutableArrayView2D& b)
+        operator!=(const MutableArray2DView& a, const MutableArray2DView& b)
         {
             return !(a == b);
         }

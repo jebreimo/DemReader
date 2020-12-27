@@ -8,7 +8,7 @@
 #include <catch2/catch.hpp>
 #include "GridLib/Array2D.hpp"
 
-TEST_CASE("ArrayView2D")
+TEST_CASE("Array2DView")
 {
     std::vector<int32_t> values = {
         0, 2, 0,
@@ -16,7 +16,7 @@ TEST_CASE("ArrayView2D")
         0, 2, 0
     };
 
-    GridLib::ArrayView2D<int32_t> grid(values.data(), 3, 3);
+    GridLib::Array2DView<int32_t> grid(values.data(), 3, 3);
     REQUIRE(grid(0, 0) == values[0]);
     REQUIRE(grid(1, 0) == values[3]);
     REQUIRE(grid(2, 1) == values[7]);

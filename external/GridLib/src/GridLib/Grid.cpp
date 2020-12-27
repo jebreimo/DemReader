@@ -35,14 +35,14 @@ namespace GridLib
         m_Grid.resize(rows, columns);
     }
 
-    ArrayView2D<double> Grid::elevations() const
+    Array2DView<double> Grid::elevations() const
     {
         return m_Grid;
     }
 
-    MutableArrayView2D<double> Grid::elevations()
+    MutableArray2DView<double> Grid::elevations()
     {
-        return MutableArrayView2D(m_Grid.data(),
+        return MutableArray2DView(m_Grid.data(),
                                   m_Grid.rows(), m_Grid.columns());
     }
 

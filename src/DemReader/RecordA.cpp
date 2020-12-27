@@ -13,6 +13,11 @@
 
 namespace Dem
 {
+    double to_degrees(const DegMinSec& dms)
+    {
+        return double(dms.degree) + dms.minute / 60.0 + dms.second / 3600.0;
+    }
+
     std::ostream& operator<<(std::ostream& os, const DegMinSec& dms)
     {
         os << dms.degree << ' ' << dms.minute << ' ' << dms.second;

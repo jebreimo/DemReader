@@ -30,7 +30,7 @@ namespace Dem
 
     GridLib::Grid read_dem_grid(std::istream& stream,
                                 GridLib::Unit desired_unit,
-                                ProgressCallback progress_callback)
+                                const ProgressCallback& progress_callback)
     {
         GridLib::Grid grid;
         Dem::DemReader reader(stream);
@@ -42,6 +42,24 @@ namespace Dem
         auto vUnit = fromDemUnit(a.vertical_unit.value_or(0));
         auto vRes = a.z_resolution.value_or(1.0);
 
+        if (a.longitude && a.latitude)
+        {
+            grid.setSphericalCoords(
+                GridLib::SphericalCoords{to_degrees(*a.latitude),
+                                         to_degrees(*a.longitude)});
+        }
+        if (const auto& c = a.quadrangle_corners[0])
+        {
+            grid.setPlanarCoords(
+                GridLib::PlanarCoords{c->easting, c->northing,
+                                      a.ref_sys_zone.value_or(0)});
+        }
+        if (a.horizontal_datum)
+        {
+            grid.setReferenceSystem(
+                GridLib::ReferenceSystem{*a.horizontal_datum,
+                                         a.vertical_datum.value_or(0)});
+        }
         double factor = 1.0;
         if (desired_unit == GridLib::Unit::METERS)
         {
@@ -92,7 +110,7 @@ namespace Dem
         grid.setRotationAngle(a.rotation_angle.value_or(0));
         grid.setUnknownElevation(UNKNOWN * factor);
 
-        GridLib::MutableArrayView2D<double> values;
+        GridLib::MutableArray2DView<double> values;
         auto rows = a.rows.value_or(1);
         auto cols = a.columns.value_or(1);
         while (auto b = reader.next_record_b())

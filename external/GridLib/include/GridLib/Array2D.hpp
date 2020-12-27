@@ -8,7 +8,7 @@
 #pragma once
 #include <stdexcept>
 #include <vector>
-#include "MutableArrayView2D.hpp"
+#include "MutableArray2DView.hpp"
 
 namespace GridLib
 {
@@ -39,22 +39,22 @@ namespace GridLib
                 throw std::runtime_error("Array2D has incorrect size.");
         }
 
-        constexpr operator ArrayView<T>() const noexcept
+        explicit constexpr operator ArrayView<T>() const noexcept
         {
             return {data(), size()};
         }
 
-        constexpr operator MutableArrayView<T>() const noexcept
+        explicit constexpr operator MutableArrayView<T>() const noexcept
         {
             return {data(), size()};
         }
 
-        constexpr operator ArrayView2D<T>() const noexcept
+        constexpr operator Array2DView<T>() const noexcept
         {
             return {data(), rows(), columns()};
         }
 
-        operator MutableArrayView2D<T>() noexcept
+        operator MutableArray2DView<T>() noexcept
         {
             return {data(), rows(), columns()};
         }

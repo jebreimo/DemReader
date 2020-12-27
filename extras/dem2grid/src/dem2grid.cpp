@@ -50,7 +50,7 @@ int main(int argc, char* argv[])
             file, GridLib::Unit::METERS,
             [](size_t step, size_t steps)
             {
-                std::cout << "\r" << step << " of " << steps << std::flush;
+                std::cerr << "\r" << step << " of " << steps;
                 return true;
             });
         std::cout << "\n";

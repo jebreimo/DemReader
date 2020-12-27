@@ -10,8 +10,8 @@
 #include <variant>
 #include "Array2D.hpp"
 #include "BitArray2D.hpp"
-#include "MutableArrayView2D.hpp"
-#include "MutableBitArrayView2D.hpp"
+#include "MutableArray2DView.hpp"
+#include "MutableBitArray2DView.hpp"
 #include "Unit.hpp"
 
 namespace GridLib
@@ -30,8 +30,9 @@ namespace GridLib
 
     struct PlanarCoords
     {
-        double northing = 0;
         double easting = 0;
+        double northing = 0;
+        int zone = 0;
     };
 
     struct ReferenceSystem
@@ -64,9 +65,9 @@ namespace GridLib
         void resize(size_t rows, size_t columns);
 
         [[nodiscard]]
-        ArrayView2D<double> elevations() const;
+        Array2DView<double> elevations() const;
 
-        MutableArrayView2D<double> elevations();
+        MutableArray2DView<double> elevations();
 
         [[nodiscard]]
         std::optional<double> unknownElevation() const;

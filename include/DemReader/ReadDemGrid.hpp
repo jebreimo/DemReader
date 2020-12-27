@@ -16,7 +16,8 @@ namespace Dem
 {
     using ProgressCallback = std::function<bool (size_t, size_t)>;
 
-    GridLib::Grid read_dem_grid(std::istream& stream,
-                                GridLib::Unit vertical_unit,
-                                ProgressCallback progress_callback = {});
+    GridLib::Grid
+    read_dem_grid(std::istream& stream,
+                  GridLib::Unit vertical_unit,
+                  const ProgressCallback& progress_callback = {});
 }

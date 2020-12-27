@@ -12,12 +12,12 @@
 
 namespace GridLib
 {
-    class BitArrayView2D
+    class MutableBitArray2DView
     {
     public:
-        BitArrayView2D() = default;
+        MutableBitArray2DView() = default;
 
-        BitArrayView2D(const uint32_t* bits, unsigned rows, unsigned columns)
+        MutableBitArray2DView(uint32_t* bits, unsigned rows, unsigned columns)
             : m_Bits(bits),
               m_Size(rows, columns)
         {}
@@ -31,16 +31,21 @@ namespace GridLib
             return (m_Bits[iWord] & (1u << iBit)) != 0;
         }
 
+        void set(size_t row, size_t column, bool value)
+        {
+            auto i = row * columns() + column;
+            auto iWord = i / 32;
+            auto iBit = i % 32;
+            if (value)
+                m_Bits[iWord] |= (1u << iBit);
+            else
+                m_Bits[iWord] &= ~(1u << iBit);
+        }
+
         [[nodiscard]]
         bool empty() const
         {
             return m_Size == std::pair(size_t(0), size_t(0));
-        }
-
-        [[nodiscard]]
-        size_t size() const
-        {
-            return m_Size.first * m_Size.second;
         }
 
         [[nodiscard]]
@@ -55,7 +60,7 @@ namespace GridLib
             return m_Size.second;
         }
     private:
-        const uint32_t* m_Bits = nullptr;
+        uint32_t* m_Bits = nullptr;
         std::pair<size_t, size_t> m_Size;
     };
 }

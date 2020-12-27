@@ -22,6 +22,8 @@ namespace Dem
         float second = 0;
     };
 
+    double to_degrees(const DegMinSec& dms);
+
     struct CartesianCoordinates
     {
         double easting = 0;
