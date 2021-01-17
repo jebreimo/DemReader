@@ -11,6 +11,7 @@ project(DemReader VERSION 0.0.0)
 set(CMAKE_CXX_STANDARD 17)
 
 add_subdirectory(external/GridLib)
+add_subdirectory(external/ImageFormats)
 
 if (NOT DEFINED DEMREADER_MASTER_PROJECT)
     if (CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
