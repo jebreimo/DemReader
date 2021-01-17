@@ -8,10 +8,7 @@
 #pragma once
 #include <optional>
 #include <variant>
-#include "Array2D.hpp"
-#include "BitArray2D.hpp"
-#include "MutableArray2DView.hpp"
-#include "MutableBitArray2DView.hpp"
+#include <Chorasmia/Array2D.hpp>
 #include "Unit.hpp"
 
 namespace GridLib
@@ -57,17 +54,17 @@ namespace GridLib
         void clear();
 
         [[nodiscard]]
-        size_t rows() const;
+        size_t rowCount() const;
 
         [[nodiscard]]
-        size_t columns() const;
+        size_t columnCount() const;
 
         void resize(size_t rows, size_t columns);
 
         [[nodiscard]]
-        Array2DView<double> elevations() const;
+        Chorasmia::ArrayView2D<double> elevations() const;
 
-        MutableArray2DView<double> elevations();
+        Chorasmia::MutableArrayView2D<double> elevations();
 
         [[nodiscard]]
         std::optional<double> unknownElevation() const;
@@ -126,9 +123,9 @@ namespace GridLib
         Grid& setReferenceSystem(std::optional<ReferenceSystem> system);
 
         [[nodiscard]]
-        Array2D<double> release();
+        Chorasmia::Array2D<double> release();
     private:
-        Array2D<double> m_Grid;
+        Chorasmia::Array2D<double> m_Grid;
         std::optional<double> m_UnknownElevation;
         Axis m_Axis[3];
         std::optional<SphericalCoords> m_SphericalCoords;

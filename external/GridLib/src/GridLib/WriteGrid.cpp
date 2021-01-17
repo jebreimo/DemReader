@@ -23,8 +23,8 @@ namespace GridLib
         void writeMetadata(Yson::Writer& writer, const Grid& grid)
         {
             writer.beginObject();
-            writer.key("rows").value(uint64_t(grid.rows()));
-            writer.key("columns").value(uint64_t(grid.columns()));
+            writer.key("rowCount").value(uint64_t(grid.rowCount()));
+            writer.key("columnCount").value(uint64_t(grid.columnCount()));
             writer.key("row_axis");
             writeAxis(writer, grid.rowAxis());
             writer.key("column_axis");
@@ -69,7 +69,7 @@ namespace GridLib
         }
 
         void writeElevations(Yson::Writer& writer,
-                             const Array2DView<double>& values,
+                             const Chorasmia::ArrayView2D<double>& values,
                              std::optional<double> unknownElevation)
         {
             writer.beginArray();

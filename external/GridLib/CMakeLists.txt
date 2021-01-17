@@ -11,10 +11,13 @@ project(GridLib)
 set(CMAKE_CXX_STANDARD 17)
 
 include(FetchContent)
+FetchContent_Declare(chorasmia
+    GIT_REPOSITORY "https://github.com/jebreimo/Chorasmia.git"
+    GIT_TAG v0.1.0)
 FetchContent_Declare(yson
     GIT_REPOSITORY "https://github.com/jebreimo/Yson.git"
     GIT_TAG v1.0.5)
-FetchContent_MakeAvailable(yson)
+FetchContent_MakeAvailable(yson chorasmia)
 
 function(GridLib_enable_all_warnings target)
     target_compile_options(${target}
@@ -26,21 +29,17 @@ function(GridLib_enable_all_warnings target)
 endfunction()
 
 add_library(GridLib
-    include/GridLib/Array2D.hpp
-    include/GridLib/Array2DView.hpp
-    include/GridLib/BitArray2D.hpp
-    include/GridLib/BitArray2DView.hpp
     include/GridLib/Grid.hpp
     include/GridLib/GridRect.hpp
-    include/GridLib/MutableArray2DView.hpp
-    include/GridLib/MutableBitArray2DView.hpp
     include/GridLib/Unit.hpp
     include/GridLib/WriteGrid.hpp
     src/GridLib/Grid.cpp
     src/GridLib/GridRect.cpp
     src/GridLib/Unit.cpp
     src/GridLib/WriteGrid.cpp
-    include/GridLib/ArrayView.hpp include/GridLib/MutableArrayView.hpp include/GridLib/RowIterator.hpp)
+    src/GridLib/ResampleGrid.cpp
+    src/GridLib/ResampleGrid.hpp
+    )
 
 target_include_directories(GridLib
     PUBLIC
@@ -48,6 +47,8 @@ target_include_directories(GridLib
     )
 
 target_link_libraries(GridLib
+    PUBLIC
+        Chorasmia::Chorasmia
     PRIVATE
         Yson::Yson
     )

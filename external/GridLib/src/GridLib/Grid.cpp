@@ -20,14 +20,14 @@ namespace GridLib
         m_Grid.fill(0);
     }
 
-    size_t Grid::rows() const
+    size_t Grid::rowCount() const
     {
-        return m_Grid.rows();
+        return m_Grid.rowCount();
     }
 
-    size_t Grid::columns() const
+    size_t Grid::columnCount() const
     {
-        return m_Grid.columns();
+        return m_Grid.columnCount();
     }
 
     void Grid::resize(size_t rows, size_t columns)
@@ -35,15 +35,14 @@ namespace GridLib
         m_Grid.resize(rows, columns);
     }
 
-    Array2DView<double> Grid::elevations() const
+    Chorasmia::ArrayView2D<double> Grid::elevations() const
     {
         return m_Grid;
     }
 
-    MutableArray2DView<double> Grid::elevations()
+    Chorasmia::MutableArrayView2D<double> Grid::elevations()
     {
-        return MutableArray2DView(m_Grid.data(),
-                                  m_Grid.rows(), m_Grid.columns());
+        return {m_Grid.data(), m_Grid.rowCount(), m_Grid.columnCount()};
     }
 
     std::optional<double> Grid::unknownElevation() const
@@ -145,7 +144,7 @@ namespace GridLib
         return *this;
     }
 
-    Array2D<double> Grid::release()
+    Chorasmia::Array2D<double> Grid::release()
     {
         return std::move(m_Grid);
     }

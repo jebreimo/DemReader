@@ -47,8 +47,8 @@ int main(int argc, char* argv[])
         }
         std::cout << '\r'
                   << "instances of record B: " << stats.count << '\n'
-                  << "rows: " << stats.max_row << '\n'
-                  << "columns: " << stats.max_column << '\n'
+                  << "rowCount: " << stats.max_row << '\n'
+                  << "columnCount: " << stats.max_column << '\n'
                   << "number of missing elevations: " << stats.missing << '\n';
     }
     catch (std::exception& ex)

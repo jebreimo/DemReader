@@ -16,7 +16,6 @@ FetchContent_MakeAvailable(catch)
 
 add_executable(GridLibTest
     GridLibTestMain.cpp
-    test_Array2D.cpp
     test_GridRect.cpp
     )
 

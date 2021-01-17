@@ -25,7 +25,7 @@ int main(int argc, char* argv[])
                  .text("Set the bottom left row and column in the input file"
                        " that will be processed. Defaults to 0, 0."))
         .add(Option{"-s", "--size"}.argument("ROWS,COLS")
-                 .text("The number of rowCount and columns in the input file that"
+                 .text("The number of rowCount and columnCount in the input file that"
                        " will be processed. Values that are too large are"
                        " adjusted automatically. Defaults to everything."))
         .add(Option{"-u", "--unit"}.argument("UNIT")

@@ -110,7 +110,7 @@ namespace Dem
         grid.setRotationAngle(a.rotation_angle.value_or(0));
         grid.setUnknownElevation(UNKNOWN * factor);
 
-        GridLib::MutableArray2DView<double> values;
+        Chorasmia::MutableArrayView2D<double> values;
         auto rows = a.rows.value_or(1);
         auto cols = a.columns.value_or(1);
         while (auto b = reader.next_record_b())
@@ -119,7 +119,7 @@ namespace Dem
             {
                 if (rows == 1)
                     rows = b->rows;
-                // DEM files uses columns (x) as the major axis.
+                // DEM files uses columnCount (x) as the major axis.
                 grid.resize(cols, rows);
                 values = grid.elevations();
             }
