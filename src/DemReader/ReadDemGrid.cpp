@@ -7,7 +7,7 @@
 //****************************************************************************
 #include "DemReader/ReadDemGrid.hpp"
 #include "DemReader/DemReader.hpp"
-#include <iostream>
+
 namespace Dem
 {
     constexpr float METERS_PER_FOOT = 0.3048;
@@ -129,11 +129,6 @@ namespace Dem
                 for (int j = 0; j < b->rows; ++j)
                 {
                     auto elev = b->elevations[i * b->rows + j];
-                    //if (elev == 0 != is0)
-                    //{
-                    //    is0 = elev == 0;
-                    //    std::cerr << (is0 ? "Sea " : "Land ") << " at " << i << j
-                    //}
                     values(i + b->column - 1, j + b->row - 1) = elev * factor;
                 }
             }

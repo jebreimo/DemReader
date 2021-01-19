@@ -22,19 +22,50 @@ struct RGBA
     uint8_t a = 0;
 };
 
+RGBA determineColor(double elevation)
+{
+    constexpr RGBA COLORS[] = {
+        {0xAE, 0xD1, 0xFC, 0xFF},
+
+        {0x7C, 0x90, 0x74, 0xFF},
+        {0x8A, 0xA0, 0x81, 0xFF},
+        {0x99, 0xB1, 0x90, 0xFF},
+        {0xAB, 0xC3, 0xA1, 0xFF},
+        {0xBF, 0xD6, 0xB6, 0xFF},
+        {0xD7, 0xE8, 0xD0, 0xFF},
+
+        {0xE4, 0xCF, 0xC6, 0xFF},
+        {0xD2, 0xB8, 0xAE, 0xFF},
+        {0xBF, 0xA5, 0x9A, 0xFF},
+        {0xAE, 0x94, 0x89, 0xFF},
+        {0x9D, 0x85, 0x7B, 0xFF},
+        {0x8C, 0x78, 0x6F, 0xFF},
+
+        {0x90, 0x80, 0x69, 0xFF},
+        {0xA1, 0x8E, 0x73, 0xFF},
+        {0xB3, 0x9E, 0x80, 0xFF},
+        {0xC5, 0xAF, 0x90, 0xFF},
+        {0xD7, 0xC2, 0xA4, 0xFF},
+        {0xE8, 0xD6, 0xBD, 0xFF}
+    };
+
+    auto index = std::max(0, (int(elevation) + 99) / 100);
+    if (index < std::size(COLORS))
+        return COLORS[index];
+    return {0xFF, 0xFF, 0xFF, 0xFF};
+}
+
 void makePng(const std::string& fileName,
              const Chorasmia::ArrayView2D<double>& grid)
 {
     std::cout << fileName << "\n";
-    Chorasmia::Array2D<RGBA> bmp(grid.rowCount(), grid.columnCount());
+    Chorasmia::Array2D<RGBA> bmp(grid.columnCount(), grid.rowCount());
     for (auto i = 0; i < grid.rowCount(); ++i)
     {
         for (auto j = 0; j < grid.columnCount(); ++j)
         {
-            if (grid(i, j) == 0)
-                bmp(i, j) = {0, 0, 160, 255};
-            else
-                bmp(i, j) = {0, 160, 0, 255};
+            auto ii = grid.columnCount() - j - 1;
+            bmp(ii, i) = determineColor(grid(i, j));
         }
     }
     ImageFormats::writePng(fileName, bmp.data(), bmp.valueCount() * sizeof(RGBA),
