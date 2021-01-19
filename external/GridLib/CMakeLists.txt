@@ -13,7 +13,7 @@ set(CMAKE_CXX_STANDARD 17)
 include(FetchContent)
 FetchContent_Declare(chorasmia
     GIT_REPOSITORY "https://github.com/jebreimo/Chorasmia.git"
-    GIT_TAG v0.1.0)
+    GIT_TAG v0.1.1)
 FetchContent_Declare(yson
     GIT_REPOSITORY "https://github.com/jebreimo/Yson.git"
     GIT_TAG v1.0.5)

@@ -7,7 +7,7 @@
 //****************************************************************************
 #include "DemReader/ReadDemGrid.hpp"
 #include "DemReader/DemReader.hpp"
-
+#include <iostream>
 namespace Dem
 {
     constexpr float METERS_PER_FOOT = 0.3048;
@@ -113,6 +113,7 @@ namespace Dem
         Chorasmia::MutableArrayView2D<double> values;
         auto rows = a.rows.value_or(1);
         auto cols = a.columns.value_or(1);
+        bool is0 = false;
         while (auto b = reader.next_record_b())
         {
             if (values.empty())
@@ -127,7 +128,12 @@ namespace Dem
             {
                 for (int j = 0; j < b->rows; ++j)
                 {
-                    auto elev = b->elevations[i];
+                    auto elev = b->elevations[i * b->rows + j];
+                    //if (elev == 0 != is0)
+                    //{
+                    //    is0 = elev == 0;
+                    //    std::cerr << (is0 ? "Sea " : "Land ") << " at " << i << j
+                    //}
                     values(i + b->column - 1, j + b->row - 1) = elev * factor;
                 }
             }

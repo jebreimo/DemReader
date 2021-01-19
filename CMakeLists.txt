@@ -62,6 +62,7 @@ export(TARGETS DemReader
 
 if (DEMREADER_BUILD_EXTRAS)
     add_subdirectory(extras/dem2grid)
+    add_subdirectory(extras/dem2png)
     add_subdirectory(extras/deminfo)
 endif()
 
