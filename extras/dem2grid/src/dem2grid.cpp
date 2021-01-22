@@ -54,7 +54,10 @@ int main(int argc, char* argv[])
                 return true;
             });
         std::cout << "\n";
-        GridLib::writeAsJson(std::cout, grid);
+        if (args.has("OUTPUT"))
+            GridLib::writeAsJson(args.value("OUTPUT").asString(), grid);
+        else
+            GridLib::writeAsJson(std::cout, grid);
         std::cout << std::endl;
     }
     catch (std::exception& ex)
