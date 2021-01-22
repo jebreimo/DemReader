@@ -164,10 +164,12 @@ namespace GridLib
                 dr = {dr.first * cos(m_RotationAngle), dr.first * sin(m_RotationAngle)};
                 dc = {-dc.second * sin(m_RotationAngle), dc.second * cos(m_RotationAngle)};
             }
-            planarCoords->easting += dr.first * nrows + dc.first * ncolumns;
-            planarCoords->northing += dr.second * nrows + dc.second * ncolumns;
+            planarCoords->easting += dr.first * row + dc.first * column;
+            planarCoords->northing += dr.second * row + dc.second * column;
         }
-        auto sphericalCoords = m_SphericalCoords ?: std::optional<SphericalCoords>();
+        auto sphericalCoords = row == 0 && column == 0
+                               ? m_SphericalCoords
+                               : std::optional<SphericalCoords>();
         return GridView(*this, m_Grid.subarray(row, column, nrows, ncolumns),
                         sphericalCoords, planarCoords);
     }

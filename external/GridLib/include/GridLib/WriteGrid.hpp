@@ -6,11 +6,11 @@
 // License text is included with the source distribution.
 //****************************************************************************
 #pragma once
-#include "Grid.hpp"
+#include "GridView.hpp"
 
 namespace GridLib
 {
-    void writeAsJson(std::ostream& stream, const Grid& grid);
+    void writeAsJson(std::ostream& stream, const GridView& grid);
 
-    void writeAsJson(const std::string& fileName, const Grid& grid);
+    void writeAsJson(const std::string& fileName, const GridView& grid);
 }

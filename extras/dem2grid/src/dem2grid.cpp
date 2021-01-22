@@ -46,7 +46,7 @@ int main(int argc, char* argv[])
 
     try
     {
-        auto grid = Dem::read_dem_grid(
+        auto demGrid = Dem::read_dem_grid(
             file, GridLib::Unit::METERS,
             [](size_t step, size_t steps)
             {
@@ -54,6 +54,7 @@ int main(int argc, char* argv[])
                 return true;
             });
         std::cout << "\n";
+        auto grid = demGrid.subgrid(position[0], position[1], size[0], size[1]);
         if (args.has("OUTPUT"))
             GridLib::writeAsJson(args.value("OUTPUT").asString(), grid);
         else
