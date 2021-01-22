@@ -11,4 +11,6 @@
 namespace GridLib
 {
     void writeAsJson(std::ostream& stream, const Grid& grid);
+
+    void writeAsJson(const std::string& fileName, const Grid& grid);
 }

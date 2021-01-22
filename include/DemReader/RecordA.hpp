@@ -11,7 +11,7 @@
 #include <iosfwd>
 #include <optional>
 #include <string>
-#include "GridLib/Unit.hpp"
+#include <GridLib/GridMemberTypes.hpp>
 
 namespace Dem
 {

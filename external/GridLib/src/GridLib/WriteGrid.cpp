@@ -7,6 +7,8 @@
 //****************************************************************************
 #include "GridLib/WriteGrid.hpp"
 #include <Yson/JsonWriter.hpp>
+#include <fstream>
+#include <GridLib/GridLibException.hpp>
 
 namespace GridLib
 {
@@ -97,5 +99,13 @@ namespace GridLib
         writeMetadata(writer, grid);
         writeElevations(writer, grid.elevations(), grid.unknownElevation());
         writer.endObject();
+    }
+
+    void writeAsJson(const std::string& fileName, const Grid& grid)
+    {
+        std::ofstream file(fileName);
+        if (!file)
+            GRIDLIB_THROW("Can not create file: " + fileName);
+        writeAsJson(file, grid);
     }
 }

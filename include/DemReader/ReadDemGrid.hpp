@@ -10,7 +10,6 @@
 #include <vector>
 #include <GridLib/Grid.hpp>
 #include <GridLib/GridRect.hpp>
-#include "GridLib/Unit.hpp"
 
 namespace Dem
 {

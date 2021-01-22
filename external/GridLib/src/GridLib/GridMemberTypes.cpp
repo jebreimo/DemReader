@@ -1,11 +1,11 @@
 //****************************************************************************
-// Copyright © 2020 Jan Erik Breimo. All rights reserved.
-// Created by Jan Erik Breimo on 2020-11-13.
+// Copyright © 2021 Jan Erik Breimo. All rights reserved.
+// Created by Jan Erik Breimo on 2021-01-20.
 //
 // This file is distributed under the BSD License.
 // License text is included with the source distribution.
 //****************************************************************************
-#include "GridLib/Unit.hpp"
+#include "GridLib/GridMemberTypes.hpp"
 
 namespace GridLib
 {
@@ -19,7 +19,8 @@ namespace GridLib
         TO_STRING(FEET);
         TO_STRING(METERS);
         TO_STRING(ARC_SECONDS);
-        default: return "UNDEFINED";
+        default:
+            return "UNDEFINED";
         }
     }
 }

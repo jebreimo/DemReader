@@ -144,6 +144,34 @@ namespace GridLib
         return *this;
     }
 
+    GridView Grid::subgrid(size_t row, size_t column,
+                           size_t nrows, size_t ncolumns) const
+    {
+        auto planarCoords = m_PlanarCoords;
+        if (planarCoords && (row != 0 || column != 0))
+        {
+            constexpr double METERS_PER_FOOT = 0.3048;
+            std::pair<double, double> dr = {m_Axis[0].resolution, 0};
+            std::pair<double, double> dc = {0, m_Axis[1].resolution};
+            if (m_Axis[0].unit == Unit::FEET)
+                dr.first /= METERS_PER_FOOT;
+            if (m_Axis[1].unit == Unit::FEET)
+                dc.second /= METERS_PER_FOOT;
+            if (m_AxisOrientation == RotationDir::CLOCKWISE)
+                dc.second = -dc.second;
+            if (m_RotationAngle != 0)
+            {
+                dr = {dr.first * cos(m_RotationAngle), dr.first * sin(m_RotationAngle)};
+                dc = {-dc.second * sin(m_RotationAngle), dc.second * cos(m_RotationAngle)};
+            }
+            planarCoords->easting += dr.first * nrows + dc.first * ncolumns;
+            planarCoords->northing += dr.second * nrows + dc.second * ncolumns;
+        }
+        auto sphericalCoords = m_SphericalCoords ?: std::optional<SphericalCoords>();
+        return GridView(*this, m_Grid.subarray(row, column, nrows, ncolumns),
+                        sphericalCoords, planarCoords);
+    }
+
     Chorasmia::Array2D<double> Grid::release()
     {
         return std::move(m_Grid);

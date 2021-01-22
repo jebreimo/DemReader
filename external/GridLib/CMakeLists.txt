@@ -35,10 +35,13 @@ add_library(GridLib
     include/GridLib/WriteGrid.hpp
     src/GridLib/Grid.cpp
     src/GridLib/GridRect.cpp
-    src/GridLib/Unit.cpp
     src/GridLib/WriteGrid.cpp
     src/GridLib/ResampleGrid.cpp
     src/GridLib/ResampleGrid.hpp
+    src/GridLib/GridView.cpp
+    include/GridLib/GridView.hpp
+    include/GridLib/GridMemberTypes.hpp
+    src/GridLib/GridMemberTypes.cpp
     )
 
 target_include_directories(GridLib

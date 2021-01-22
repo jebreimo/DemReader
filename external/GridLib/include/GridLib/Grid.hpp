@@ -9,41 +9,11 @@
 #include <optional>
 #include <variant>
 #include <Chorasmia/Array2D.hpp>
-#include "Unit.hpp"
+#include "GridMemberTypes.hpp"
+#include "GridView.hpp"
 
 namespace GridLib
 {
-    struct Axis
-    {
-        double resolution = {};
-        Unit unit = {};
-    };
-
-    struct SphericalCoords
-    {
-        double latitude = 0;
-        double longitude = 0;
-    };
-
-    struct PlanarCoords
-    {
-        double easting = 0;
-        double northing = 0;
-        int zone = 0;
-    };
-
-    struct ReferenceSystem
-    {
-        int horizontal = 0;
-        int vertical = 0;
-    };
-
-    enum class RotationDir
-    {
-        CLOCKWISE,
-        COUNTERCLOCKWISE
-    };
-
     class Grid
     {
     public:
@@ -100,10 +70,9 @@ namespace GridLib
         double rotationAngle() const;
 
         /**
-         * @brief Set the ccw angle that the row (major) axis has been
-         * rotated relative to due east.
+         * @brief Set the ccw angle, in radians, that the row (major) axis
+         * has been rotated relative to due east.
          *
-         * North is zero degrees.
          * @param angle The counter-clockwise angle from due east in radians.
          */
         Grid& setRotationAngle(double angle);
@@ -121,6 +90,10 @@ namespace GridLib
         const std::optional<ReferenceSystem>& referenceSystem() const;
 
         Grid& setReferenceSystem(std::optional<ReferenceSystem> system);
+
+        GridView subgrid(size_t row, size_t column,
+                         size_t nrows = SIZE_MAX,
+                         size_t ncolumns = SIZE_MAX) const;
 
         [[nodiscard]]
         Chorasmia::Array2D<double> release();
