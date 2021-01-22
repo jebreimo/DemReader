@@ -74,6 +74,24 @@ void makePng(const std::string& fileName,
                                .height(bmp.rowCount()), {});
 }
 
+void makeTiles(const GridLib::GridView& grid,
+               unsigned rows, unsigned cols,
+               const std::string& fileName)
+{
+    std::filesystem::path path(fileName);
+    auto extension = path.extension().string();
+    auto prefix = path.replace_extension().string();
+    for (size_t i = 0; i < grid.rowCount(); i += rows)
+    {
+        for (size_t j = 0; j < grid.columnCount(); j += cols)
+        {
+            makePng(fmt::format("{}_{:04}_{:04}{}",
+                                prefix, i, j, extension),
+                    grid.elevations().subarray(i, j, rows, cols));
+        }
+    }
+}
+
 int main(int argc, char* argv[])
 {
     using namespace Argos;
@@ -82,6 +100,9 @@ int main(int argc, char* argv[])
         .add(Argument("FILE").text("The name of the DEM file."))
         .add(Argument("OUTPUT")
                  .text("The name of the output PNG file(s)."))
+        .add(Option{"-p", "--position"}.argument("ROW,COL")
+                 .text("Set the bottom left row and column in the input file"
+                       " that will be processed. Defaults to 0, 0."))
         .add(Option{"-s", "--size"}.argument("ROWS,COLS")
                  .text("The tile size. Defaults to whichever is smaller of"
                        " the size of the grid and 1024x1024."))
@@ -89,9 +110,12 @@ int main(int argc, char* argv[])
 
     auto size = args.value("--size").split(',', 2, 2).asUInts({1024, 1024});
 
-    std::ifstream file(args.value("FILE").asString());
+    auto inFileName = args.value("FILE").asString();
+    std::ifstream file(inFileName);
     if (!file)
         args.value("FILE").error("no such file!");
+
+    auto outFileName = args.value("OUTPUT").asString();
 
     try
     {
@@ -103,25 +127,14 @@ int main(int argc, char* argv[])
                 return true;
             });
         std::cout << "\n";
-        auto tileRows = grid.rowCount() / size[0];
-        auto tileRowRemainder = grid.rowCount() % size[0];
-        auto tileCols = grid.columnCount() / size[1];
-        auto tileColRemainder = grid.columnCount() % size[1];
-
-        std::cout << tileRows << ", " << tileRowRemainder << ", "
-                  << tileCols << ", " << tileColRemainder << std::endl;
-
-        std::filesystem::path path(args.value("OUTPUT").asString());
-        auto extension = path.extension().string();
-        auto prefix = path.replace_extension().string();
-        for (size_t i = 0; i < grid.rowCount(); i += size[0])
+        if (args.has("-p"))
         {
-            for (size_t j = 0; j < grid.columnCount(); j += size[1])
-            {
-                makePng(fmt::format("{}_{:04}_{:04}{}",
-                                    prefix, i, j, extension),
-                        grid.elevations().subarray(i, j, size[0], size[1]));
-            }
+            auto pos = args.value("--position").split(',', 2, 2).asUInts();
+            makePng(outFileName, grid.elevations().subarray(pos[0], pos[1], size[0], size[1]));
+        }
+        else
+        {
+            makeTiles(grid, size[0], size[1], outFileName);
         }
     }
     catch (std::exception& ex)
