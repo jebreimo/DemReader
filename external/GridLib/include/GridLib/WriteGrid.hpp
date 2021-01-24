@@ -10,7 +10,7 @@
 
 namespace GridLib
 {
-    void writeAsJson(std::ostream& stream, const GridView& grid);
+    void writeJsonGrid(std::ostream& stream, const GridView& grid);
 
-    void writeAsJson(const std::string& fileName, const GridView& grid);
+    void writeJsonGrid(const std::string& fileName, const GridView& grid);
 }

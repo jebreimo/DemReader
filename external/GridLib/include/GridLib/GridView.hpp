@@ -63,6 +63,9 @@ namespace GridLib
         const std::optional<ReferenceSystem>& referenceSystem() const;
 
         const Grid* baseGrid() const;
+
+        GridView subgrid(size_t row, size_t column,
+                         size_t nrows, size_t ncolumns) const;
     private:
         void assertGrid() const;
 

@@ -10,7 +10,6 @@
 #include <cstdint>
 #include <optional>
 #include <vector>
-#include "../../external/GridLib/include/GridLib/GridRect.hpp"
 
 namespace Dem
 {

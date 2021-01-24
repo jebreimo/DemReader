@@ -6,6 +6,8 @@
 // License text is included with the source distribution.
 //****************************************************************************
 #pragma once
+#include <optional>
+#include <string_view>
 
 namespace GridLib
 {
@@ -17,7 +19,9 @@ namespace GridLib
         ARC_SECONDS = 3
     };
 
-    const char* toString(Unit unit);
+    std::string_view toString(Unit unit);
+
+    std::optional<Unit> parseUnit(std::string_view str);
 
     struct Axis
     {
@@ -25,11 +29,21 @@ namespace GridLib
         Unit unit = {};
     };
 
+    constexpr bool operator==(const Axis& a, const Axis& b)
+    {
+        return a.resolution == b.resolution && a.unit == b.unit;
+    }
+
     struct SphericalCoords
     {
         double latitude = 0;
         double longitude = 0;
     };
+
+    constexpr bool operator==(const SphericalCoords& a, const SphericalCoords& b)
+    {
+        return a.latitude == b.latitude && a.longitude == b.longitude;
+    }
 
     struct PlanarCoords
     {
@@ -38,11 +52,23 @@ namespace GridLib
         int zone = 0;
     };
 
+    constexpr bool operator==(const PlanarCoords& a, const PlanarCoords& b)
+    {
+        return a.easting == b.easting
+               && a.northing == b.northing
+               && a.zone == b.zone;
+    }
+
     struct ReferenceSystem
     {
         int horizontal = 0;
         int vertical = 0;
     };
+
+    constexpr bool operator==(const ReferenceSystem& a, const ReferenceSystem& b)
+    {
+        return a.horizontal == b.horizontal && a.vertical == b.vertical;
+    }
 
     enum class RotationDir
     {

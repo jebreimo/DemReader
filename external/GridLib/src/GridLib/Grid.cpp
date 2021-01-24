@@ -140,42 +140,34 @@ namespace GridLib
 
     Grid& Grid::setReferenceSystem(std::optional<ReferenceSystem> system)
     {
-        m_ReferenceSystem = system;
+        m_ReferenceSystem = move(system);
         return *this;
     }
 
     GridView Grid::subgrid(size_t row, size_t column,
                            size_t nrows, size_t ncolumns) const
     {
-        auto planarCoords = m_PlanarCoords;
-        if (planarCoords && (row != 0 || column != 0))
-        {
-            constexpr double METERS_PER_FOOT = 0.3048;
-            std::pair<double, double> dr = {m_Axis[0].resolution, 0};
-            std::pair<double, double> dc = {0, m_Axis[1].resolution};
-            if (m_Axis[0].unit == Unit::FEET)
-                dr.first /= METERS_PER_FOOT;
-            if (m_Axis[1].unit == Unit::FEET)
-                dc.second /= METERS_PER_FOOT;
-            if (m_AxisOrientation == RotationDir::CLOCKWISE)
-                dc.second = -dc.second;
-            if (m_RotationAngle != 0)
-            {
-                dr = {dr.first * cos(m_RotationAngle), dr.first * sin(m_RotationAngle)};
-                dc = {-dc.second * sin(m_RotationAngle), dc.second * cos(m_RotationAngle)};
-            }
-            planarCoords->easting += dr.first * row + dc.first * column;
-            planarCoords->northing += dr.second * row + dc.second * column;
-        }
-        auto sphericalCoords = row == 0 && column == 0
-                               ? m_SphericalCoords
-                               : std::optional<SphericalCoords>();
-        return GridView(*this, m_Grid.subarray(row, column, nrows, ncolumns),
-                        sphericalCoords, planarCoords);
+        return GridView(*this).subgrid(row, column, nrows, ncolumns);
     }
 
     Chorasmia::Array2D<double> Grid::release()
     {
         return std::move(m_Grid);
+    }
+
+    bool operator==(const Grid& a, const Grid& b)
+    {
+        if (&a == &b)
+            return true;
+        return a.elevations() == b.elevations()
+               && a.unknownElevation() == b.unknownElevation()
+               && a.rowAxis() == b.rowAxis()
+               && a.columnAxis() == b.columnAxis()
+               && a.verticalAxis() == b.verticalAxis()
+               && a.sphericalCoords() == b.sphericalCoords()
+               && a.planarCoords() == b.planarCoords()
+               && a.rotationAngle() == b.rotationAngle()
+               && a.referenceSystem() == b.referenceSystem()
+               && a.axisOrientation() == b.axisOrientation();
     }
 }

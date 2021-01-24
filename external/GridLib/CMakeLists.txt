@@ -13,10 +13,10 @@ set(CMAKE_CXX_STANDARD 17)
 include(FetchContent)
 FetchContent_Declare(chorasmia
     GIT_REPOSITORY "https://github.com/jebreimo/Chorasmia.git"
-    GIT_TAG v0.1.1)
+    GIT_TAG v0.1.2)
 FetchContent_Declare(yson
     GIT_REPOSITORY "https://github.com/jebreimo/Yson.git"
-    GIT_TAG v1.0.5)
+    GIT_TAG v1.0.7)
 FetchContent_MakeAvailable(yson chorasmia)
 
 function(GridLib_enable_all_warnings target)
@@ -30,18 +30,16 @@ endfunction()
 
 add_library(GridLib
     include/GridLib/Grid.hpp
-    include/GridLib/GridRect.hpp
-    include/GridLib/Unit.hpp
+    include/GridLib/GridLibException.hpp
+    include/GridLib/GridMemberTypes.hpp
+    include/GridLib/GridView.hpp
+    include/GridLib/ReadGrid.hpp
     include/GridLib/WriteGrid.hpp
     src/GridLib/Grid.cpp
-    src/GridLib/GridRect.cpp
-    src/GridLib/WriteGrid.cpp
-    src/GridLib/ResampleGrid.cpp
-    src/GridLib/ResampleGrid.hpp
-    src/GridLib/GridView.cpp
-    include/GridLib/GridView.hpp
-    include/GridLib/GridMemberTypes.hpp
     src/GridLib/GridMemberTypes.cpp
+    src/GridLib/GridView.cpp
+    src/GridLib/ReadGrid.cpp
+    src/GridLib/WriteGrid.cpp
     )
 
 target_include_directories(GridLib

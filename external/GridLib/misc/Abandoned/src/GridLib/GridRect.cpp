@@ -5,7 +5,7 @@
 // This file is distributed under the BSD License.
 // License text is included with the source distribution.
 //****************************************************************************
-#include "GridLib/GridRect.hpp"
+#include "../../include/GridLib/GridRect.hpp"
 
 #include <algorithm>
 #include <climits>

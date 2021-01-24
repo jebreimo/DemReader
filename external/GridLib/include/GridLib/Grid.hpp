@@ -91,6 +91,7 @@ namespace GridLib
 
         Grid& setReferenceSystem(std::optional<ReferenceSystem> system);
 
+        [[nodiscard]]
         GridView subgrid(size_t row, size_t column,
                          size_t nrows = SIZE_MAX,
                          size_t ncolumns = SIZE_MAX) const;
@@ -107,4 +108,6 @@ namespace GridLib
         std::optional<ReferenceSystem> m_ReferenceSystem;
         RotationDir m_AxisOrientation = RotationDir::COUNTERCLOCKWISE;
     };
+
+    bool operator==(const Grid& a, const Grid& b);
 }

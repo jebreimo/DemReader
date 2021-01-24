@@ -16,7 +16,7 @@ FetchContent_MakeAvailable(catch)
 
 add_executable(GridLibTest
     GridLibTestMain.cpp
-    test_GridRect.cpp
+    test_ReadAndWriteGrid.cpp
     )
 
 target_link_libraries(GridLibTest

@@ -17,7 +17,7 @@ namespace GridLib
         void writeAxis(Yson::Writer& writer, const Axis& axis)
         {
             writer.beginObject();
-            writer.key("unit").value(toString(axis.unit));
+            writer.key("unit").value(std::string(toString(axis.unit)));
             writer.key("resolution").value(axis.resolution);
             writer.endObject();
         }
@@ -25,8 +25,8 @@ namespace GridLib
         void writeMetadata(Yson::Writer& writer, const GridView& grid)
         {
             writer.beginObject();
-            writer.key("rowCount").value(uint64_t(grid.rowCount()));
-            writer.key("columnCount").value(uint64_t(grid.columnCount()));
+            writer.key("row_count").value(uint64_t(grid.rowCount()));
+            writer.key("column_count").value(uint64_t(grid.columnCount()));
             writer.key("row_axis");
             writeAxis(writer, grid.rowAxis());
             writer.key("column_axis");
@@ -40,7 +40,7 @@ namespace GridLib
 
             if (const auto& coords = grid.planarCoords())
             {
-                writer.key("planar_location")
+                writer.key("planar_coords")
                     .beginObject()
                     .key("northing").value(coords->northing)
                     .key("easting").value(coords->easting)
@@ -50,7 +50,7 @@ namespace GridLib
 
             if (const auto& coords = grid.sphericalCoords())
             {
-                writer.key("spherical_location")
+                writer.key("spherical_coords")
                     .beginObject()
                     .key("latitude").value(coords->latitude)
                     .key("longitude").value(coords->longitude)
@@ -91,21 +91,22 @@ namespace GridLib
         }
     }
 
-    void writeAsJson(std::ostream& stream, const GridView& grid)
+    void writeJsonGrid(std::ostream& stream, const GridView& grid)
     {
         Yson::JsonWriter writer(stream, Yson::JsonFormatting::FORMAT);
         writer.beginObject();
         writer.key("metadata");
         writeMetadata(writer, grid);
+        writer.key("elevations");
         writeElevations(writer, grid.elevations(), grid.unknownElevation());
         writer.endObject();
     }
 
-    void writeAsJson(const std::string& fileName, const GridView& grid)
+    void writeJsonGrid(const std::string& fileName, const GridView& grid)
     {
         std::ofstream file(fileName);
         if (!file)
             GRIDLIB_THROW("Can not create file: " + fileName);
-        writeAsJson(file, grid);
+        writeJsonGrid(file, grid);
     }
 }

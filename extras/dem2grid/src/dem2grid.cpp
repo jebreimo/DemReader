@@ -8,7 +8,6 @@
 #include <iostream>
 #include <fstream>
 #include <Argos/Argos.hpp>
-//#include <Yson/JsonWriter.hpp>
 #include <DemReader/ReadDemGrid.hpp>
 #include "GridLib/WriteGrid.hpp"
 
@@ -56,9 +55,9 @@ int main(int argc, char* argv[])
         std::cout << "\n";
         auto grid = demGrid.subgrid(position[0], position[1], size[0], size[1]);
         if (args.has("OUTPUT"))
-            GridLib::writeAsJson(args.value("OUTPUT").asString(), grid);
+            GridLib::writeJsonGrid(args.value("OUTPUT").asString(), grid);
         else
-            GridLib::writeAsJson(std::cout, grid);
+            GridLib::writeJsonGrid(std::cout, grid);
         std::cout << std::endl;
     }
     catch (std::exception& ex)
