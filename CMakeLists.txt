@@ -6,11 +6,15 @@
 # License text is included with the source distribution.
 # ===========================================================================
 cmake_minimum_required(VERSION 3.17)
-project(DemReader VERSION 0.0.0)
+project(DemReader VERSION 0.1.0)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_subdirectory(external/GridLib)
+include(FetchContent)
+FetchContent_Declare(gridlib
+    GIT_REPOSITORY "https://github.com/jebreimo/GridLib.git")
+FetchContent_MakeAvailable(gridlib)
+
 add_subdirectory(external/ImageFormats)
 
 if (NOT DEFINED DEMREADER_MASTER_PROJECT)

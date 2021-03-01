@@ -49,7 +49,7 @@ RGBA determineColor(double elevation)
         {0xE8, 0xD6, 0xBD, 0xFF}
     };
 
-    auto index = std::max(0, (int(elevation) + 99) / 100);
+    auto index = std::max(0, (int(elevation) + 24) / 25);
     if (index < std::size(COLORS))
         return COLORS[index];
     return {0xFF, 0xFF, 0xFF, 0xFF};
