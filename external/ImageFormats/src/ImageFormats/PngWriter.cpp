@@ -101,7 +101,10 @@ namespace ImageFormats
     PngWriter::~PngWriter()
     {
         if (m_PngPtr)
+        {
+            png_write_flush(m_PngPtr);
             png_destroy_write_struct(&m_PngPtr, &m_InfoPtr);
+        }
     }
 
     PngWriter& PngWriter::operator=(PngWriter&& obj) noexcept
@@ -209,6 +212,12 @@ namespace ImageFormats
             reinterpret_cast<unsigned char*>(const_cast<void*>(row)));
     }
 
+    void PngWriter::writeEnd()
+    {
+        assertIsValid();
+        png_write_end(m_PngPtr, nullptr);
+    }
+
     void PngWriter::assertIsValid() const
     {
         if (!m_InfoPtr || !m_PngPtr)
@@ -222,6 +231,7 @@ namespace ImageFormats
         PngWriter writer(stream, std::move(options), std::move(transform));
         writer.writeInfo();
         writer.write(image, imageSize);
+        writer.writeEnd();
     }
 
     void writePng(const std::string& fileName,

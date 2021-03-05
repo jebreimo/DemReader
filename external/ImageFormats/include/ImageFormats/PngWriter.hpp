@@ -36,6 +36,8 @@ namespace ImageFormats
         void writeRows(const void* rows[], uint32_t count, size_t rowSize);
 
         void writeRow(const void* row, size_t size);
+
+        void writeEnd();
     private:
         void assertIsValid() const;
 
